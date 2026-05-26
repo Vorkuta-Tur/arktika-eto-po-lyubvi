@@ -44,55 +44,43 @@
   </header>
 
   <main>
-    <section class="hero summer" id="hero">
+    <section id="home" class="hero summer">
       <div class="hero-glow"></div>
-
+      <div class="hero-overlay"></div>
       <div class="container hero-grid">
-        <div>
-          <div class="badge" id="heroBadge">Сезонный туристический гид по Воркуте</div>
-
-          <div class="season-toggle">
-            <button class="season-btn active summer" type="button" data-season="summer">Лето</button>
-            <button class="season-btn winter" type="button" data-season="winter">Зима</button>
-          </div>
-
-          <h1 class="hero-title">
-            Откройте для себя <span class="summer" id="heroAccent">Воркуту</span>
-          </h1>
-
-          <p class="hero-text" id="heroText">
-            Сайт помогает быстро выбрать сезон, посмотреть погоду, открыть маршруты,
-            изучить объекты и перейти к бронированию услуг для поездки по городу.
-          </p>
-
-          <div class="hero-actions">
-            <button class="primary-btn" type="button" data-scroll="routes">Смотреть маршруты</button>
-            <button class="secondary-btn" type="button" data-scroll="map">Открыть карту</button>
-          </div>
-        </div>
-
         <div class="hero-info-grid">
-          <div class="weather-card">
-            <div class="badge">Погода в городе</div>
+          <span id="heroBadge" class="badge">Летний сезон по Воркуте</span>
+          <h1 id="heroTitle" class="hero-title">
+            Откройте для себя
+            <span id="heroAccent" class="summer">Воркуту</span>
+          </h1>
+          <p id="heroText" class="hero-text">
+            Летние маршруты делают акцент на открытых площадках, культурных объектах и протяжённых прогулках по городу.
+          </p>
+          <div class="hero-actions">
+            <button type="button" class="primary-btn" data-scroll="routes">Смотреть маршруты</button>
+            <button type="button" class="secondary-btn" data-scroll="map">Открыть карту</button>
+          </div>
+          <div class="hero-panel">
+            <div class="badge top-small">Погода в городе</div>
             <div class="temp" id="weatherTemp">+8°C</div>
             <p id="weatherText">Летний режим: умеренно прохладно, комфортно для прогулок.</p>
-
-            <div class="weather-grid">
-              <div class="info-card">
-                <strong>Ветер</strong>
-                <p id="weatherWind">5 м/с</p>
+            <div class="weather-grid top-medium">
+              <div class="weather-card">
+                <div class="muted">Ветер</div>
+                <div id="weatherWind">5 м/с</div>
               </div>
-              <div class="info-card">
-                <strong>Осадки</strong>
-                <p id="weatherPrecip">10%</p>
+              <div class="weather-card">
+                <div class="muted">Осадки</div>
+                <div id="weatherPrecip">10%</div>
               </div>
-              <div class="info-card">
-                <strong>Световой день</strong>
-                <p id="weatherLight">Длинный</p>
+              <div class="weather-card">
+                <div class="muted">Световой день</div>
+                <div id="weatherLight">Длинный</div>
               </div>
-              <div class="info-card">
-                <strong>Рекомендация</strong>
-                <p id="weatherAdvice">Лёгкая ветровка</p>
+              <div class="weather-card">
+                <div class="muted">Рекомендация</div>
+                <div id="weatherAdvice">Лёгкая ветровка</div>
               </div>
             </div>
           </div>
