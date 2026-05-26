@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Воркута Тур</title>
+
+  <script src="https://api-maps.yandex.ru/2.1/?apikey=8cbbc9d2-0491-46ba-8be0-84f7bc4c73f8&lang=ru_RU"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <button class="brand" data-scroll="hero" type="button">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-title">Воркута Тур</span>
+          <span class="brand-subtitle">Туристические маршруты</span>
+        </span>
+      </button>
+
+      <nav class="nav">
+        <button type="button" data-scroll="hero">Главная</button>
+        <button type="button" data-scroll="routes">Маршруты</button>
+        <button type="button" data-scroll="map">Карта</button>
+        <button type="button" data-scroll="objects">Объекты</button>
+        <button type="button" data-scroll="practical">Практическая информация</button>
+        <button type="button" class="cta-btn" data-scroll="booking">Бронирование</button>
+      </nav>
+
+      <button class="menu-btn" id="menuToggle" type="button">☰</button>
+    </div>
+
+    <div class="container">
+      <div class="mobile-nav" id="mobileNav">
+        <button type="button" data-scroll="hero">Главная</button>
+        <button type="button" data-scroll="routes">Маршруты</button>
+        <button type="button" data-scroll="map">Карта</button>
+        <button type="button" data-scroll="objects">Объекты</button>
+        <button type="button" data-scroll="practical">Практическая информация</button>
+        <button type="button" data-scroll="booking">Бронирование</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero summer" id="hero">
+      <div class="hero-glow"></div>
+
+      <div class="container hero-grid">
+        <div>
+          <div class="badge" id="heroBadge">Сезонный туристический гид по Воркуте</div>
+
+          <div class="season-toggle">
+            <button class="season-btn active summer" type="button" data-season="summer">Лето</button>
+            <button class="season-btn winter" type="button" data-season="winter">Зима</button>
+          </div>
+
+          <h1 class="hero-title">
+            Откройте для себя <span class="summer" id="heroAccent">Воркуту</span>
+          </h1>
+
+          <p class="hero-text" id="heroText">
+            Сайт помогает быстро выбрать сезон, посмотреть погоду, открыть маршруты,
+            изучить объекты и перейти к бронированию услуг для поездки по городу.
+          </p>
+
+          <div class="hero-actions">
+            <button class="primary-btn" type="button" data-scroll="routes">Смотреть маршруты</button>
+            <button class="secondary-btn" type="button" data-scroll="map">Открыть карту</button>
+          </div>
+        </div>
+
+        <div class="hero-info-grid">
+          <div class="weather-card">
+            <div class="badge">Погода в городе</div>
+            <div class="temp" id="weatherTemp">+8°C</div>
+            <p id="weatherText">Летний режим: умеренно прохладно, комфортно для прогулок.</p>
+
+            <div class="weather-grid">
+              <div class="info-card">
+                <strong>Ветер</strong>
+                <p id="weatherWind">5 м/с</p>
+              </div>
+              <div class="info-card">
+                <strong>Осадки</strong>
+                <p id="weatherPrecip">10%</p>
+              </div>
+              <div class="info-card">
+                <strong>Световой день</strong>
+                <p id="weatherLight">Длинный</p>
+              </div>
+              <div class="info-card">
+                <strong>Рекомендация</strong>
+                <p id="weatherAdvice">Лёгкая ветровка</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="routes" class="section-white">
+      <div class="container">
+        <div class="section-center">
+          <span class="badge">Маршруты</span>
+          <h2 class="section-title top-space">Четыре сезонных маршрута</h2>
+          <p class="section-text section-text-center" id="routesDescription"></p>
+        </div>
+
+        <div class="routes-grid" id="routesGrid"></div>
+      </div>
+    </section>
+
+    <section id="map" class="map-section">
+      <div class="container">
+        <div class="section-center">
+          <span class="badge">Интерактивная карта</span>
+          <h2 class="section-title top-space">Яндекс Карта маршрутов</h2>
+          <p class="section-text section-text-center">
+            На карте показываются точки активного маршрута и линия между ними.
+            При выборе маршрута карта перестраивается и центрируется на стартовой точке.
+          </p>
+        </div>
+
+        <div class="map-topbar">
+          <div class="badge" id="mapModeBadge">Летний режим карты</div>
+          <div class="map-season-toggle">
+            <button class="map-season-btn active summer" type="button" data-map-season="summer">Лето</button>
+            <button class="map-season-btn winter" type="button" data-map-season="winter">Зима</button>
+          </div>
+        </div>
+
+        <div class="map-layout">
+          <div class="sidebar-stack">
+            <div class="sidebar-card">
+              <h3 class="map-sidebar-title">Маршруты сезона</h3>
+              <div class="route-list" id="mapRouteList"></div>
+            </div>
+
+            <div class="sidebar-card">
+              <h3 class="map-sidebar-title">Легенда</h3>
+              <div class="legend-list" id="legendList"></div>
+            </div>
+
+            <div class="sidebar-card">
+              <h3 class="map-sidebar-title">Текущий режим</h3>
+              <p id="seasonBoxText" class="muted no-margin"></p>
+              <div id="warmingBox" class="warming-box">Точки обогрева отмечены в зимних маршрутах.</div>
+            </div>
+          </div>
+
+          <div>
+            <div class="map-box">
+              <div class="map-canvas" id="mapCanvas"></div>
+            </div>
+            <div class="summary-grid" id="summaryGrid"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="objects" class="section-white">
+      <div class="container">
+        <span class="badge">Объекты</span>
+        <h2 class="section-title top-space">Каталог 11 достопримечательностей</h2>
+        <p class="section-text">
+          Основные точки интереса, которые участвуют в маршрутах и отображаются на карте как связанные точки пути.
+        </p>
+        <div class="object-grid" id="objectGrid"></div>
+      </div>
+    </section>
+
+    <section id="practical">
+      <div class="container">
+        <span class="badge">Практическая информация</span>
+        <h2 class="section-title top-space">Экипировка, безопасность и экстренные контакты</h2>
+
+        <div class="practice-grid">
+          <div class="practice-card">
+            <h3>Рекомендации по экипировке</h3>
+            <div class="contact-list" id="gearList"></div>
+          </div>
+
+          <div class="practice-card">
+            <h3>Правила безопасности</h3>
+            <div class="contact-list" id="safetyList"></div>
+          </div>
+
+          <div class="practice-card">
+            <h3>Экстренные службы</h3>
+            <div class="contact-list" id="emergencyList"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="booking">
+      <div class="container section-center">
+        <span class="badge">Планируйте поездку</span>
+        <h2 class="section-title top-space">Бронирование услуг</h2>
+        <p class="section-text section-text-center">
+          Подберите отель, трансфер или ресторан рядом с интересующим маршрутом.
+        </p>
+
+        <div class="booking-tabs" id="bookingTabs"></div>
+
+        <div class="booking-layout">
+          <div>
+            <h3 class="booking-list-title" id="bookingListTitle"></h3>
+            <div class="booking-options" id="bookingOptions"></div>
+          </div>
+
+          <div class="booking-form">
+            <h3>Оставить заявку</h3>
+
+            <div class="success-box" id="successBox">
+              <div class="success-icon">✓</div>
+              <h4 class="success-title">Заявка отправлена</h4>
+              <p class="muted top-small">Мы свяжемся с вами в ближайшее время.</p>
+            </div>
+
+            <form id="bookingForm">
+              <div class="service-box" id="selectedServiceBox">
+                <div>
+                  <div class="service-label">Выбранная услуга:</div>
+                  <strong id="selectedServiceText"></strong>
+                </div>
+              </div>
+
+              <div class="field-full">
+                <label for="name">Ваше имя</label>
+                <input id="name" type="text" placeholder="Иван Петров" required />
+              </div>
+
+              <div class="form-grid">
+                <div class="field">
+                  <label for="phone">Телефон</label>
+                  <input id="phone" type="tel" placeholder="+7 900 000-00-00" required />
+                </div>
+
+                <div class="field">
+                  <label for="email">Email</label>
+                  <input id="email" type="email" placeholder="email@example.com" />
+                </div>
+
+                <div class="field">
+                  <label for="date">Дата</label>
+                  <input id="date" type="date" required />
+                </div>
+
+                <div class="field">
+                  <label for="guests">Гостей</label>
+                  <select id="guests"></select>
+                </div>
+              </div>
+
+              <div class="field-full top-medium">
+                <label for="message">Комментарий</label>
+                <textarea id="message" placeholder="Дополнительные пожелания..."></textarea>
+              </div>
+
+              <button class="primary-btn full-width top-medium" type="submit">Отправить заявку</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="brand footer-brand">
+            <span class="brand-mark footer-brand-mark" aria-hidden="true"></span>
+            <span class="brand-text">
+              <span class="brand-title footer-brand-title">Воркута Тур</span>
+              <span class="brand-subtitle footer-brand-subtitle">Туристические маршруты</span>
+            </span>
+          </div>
+          <p class="footer-text">
+            Сезонный туристический сайт с маршрутами, картой, каталогом объектов, практическими рекомендациями и погодой.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Разделы</h4>
+          <div class="footer-links">
+            <button type="button" data-scroll="hero">Главная</button>
+            <button type="button" data-scroll="routes">Маршруты</button>
+            <button type="button" data-scroll="map">Карта</button>
+            <button type="button" data-scroll="objects">Объекты</button>
+            <button type="button" data-scroll="practical">Практическая информация</button>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Контакты</h4>
+          <div class="contact-list muted">
+            <div class="contact-item"><span>112</span><span>Единый номер экстренных служб</span></div>
+            <div class="contact-item"><span>101</span><span>Пожарная охрана</span></div>
+            <div class="contact-item"><span>102</span><span>Полиция</span></div>
+            <div class="contact-item"><span>103</span><span>Скорая помощь</span></div>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Подписка на новости</h4>
+          <p class="muted footer-subscribe-text">Узнавайте первыми о новых маршрутах и сезонных обновлениях.</p>
+          <div class="subscribe-grid">
+            <input class="subscribe-input" type="email" placeholder="Ваш email" />
+            <button class="primary-btn subscribe-btn" type="button">Подписаться</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 Воркута Тур. Все права защищены.</div>
+        <div class="footer-bottom-links">
+          <a href="#">Политика конфиденциальности</a>
+          <a href="#">Условия использования</a>
+          <div class="stats-number" id="heroRouteCount">3</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
