@@ -106,12 +106,32 @@
           <div class="a11y-controls">
             <button type="button" class="a11y-chip danger" data-a11y-reset="1">Обычная версия</button>
             <button type="button" class="a11y-chip" data-a11y-collapse="1">Свернуть</button>
-            <button type="button" class="a11y-chip" data-a11y-ui-collapse="1">Свернуть верхнее UI</button>
           </div>
         </div>
       </div>
     </div>
   </header>
+
+  <!-- Плавающая кнопка, чтобы вернуть верхнее UI после полного скрытия шапки -->
+  <button
+    type="button"
+    class="a11y-btn ui-float-toggle"
+    id="uiCollapseFloating"
+    data-a11y-ui-collapse="1"
+    aria-label="Развернуть верхнее UI"
+    title="Развернуть верхнее UI"
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path
+        d="M6 9l6 6 6-6"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </button>
 
   <main>
     <section class="hero summer" id="hero">
@@ -147,20 +167,76 @@
             <p id="weatherText">Летний режим: умеренно прохладно, комфортно для прогулок.</p>
 
             <div class="weather-grid">
-              <div class="info-card">
-                <strong>Ветер</strong>
+              <div class="info-card weather-detail">
+                <div class="info-card-head">
+                  <strong>Ветер</strong>
+                  <button type="button" class="weather-expand-btn" data-weather-expand="1" aria-label="Развернуть" title="Развернуть">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path
+                        d="M6 9l6 6 6-6"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
                 <p id="weatherWind">5 м/с</p>
               </div>
-              <div class="info-card">
-                <strong>Осадки</strong>
+              <div class="info-card weather-detail">
+                <div class="info-card-head">
+                  <strong>Осадки</strong>
+                  <button type="button" class="weather-expand-btn" data-weather-expand="1" aria-label="Развернуть" title="Развернуть">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path
+                        d="M6 9l6 6 6-6"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
                 <p id="weatherPrecip">10%</p>
               </div>
-              <div class="info-card">
-                <strong>Световой день</strong>
+              <div class="info-card weather-detail">
+                <div class="info-card-head">
+                  <strong>Световой день</strong>
+                  <button type="button" class="weather-expand-btn" data-weather-expand="1" aria-label="Развернуть" title="Развернуть">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path
+                        d="M6 9l6 6 6-6"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
                 <p id="weatherLight">Длинный</p>
               </div>
-              <div class="info-card">
-                <strong>Рекомендация</strong>
+              <div class="info-card weather-detail">
+                <div class="info-card-head">
+                  <strong>Рекомендация</strong>
+                  <button type="button" class="weather-expand-btn" data-weather-expand="1" aria-label="Развернуть" title="Развернуть">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path
+                        d="M6 9l6 6 6-6"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
                 <p id="weatherAdvice">Лёгкая ветровка</p>
               </div>
             </div>
@@ -205,11 +281,6 @@
             <div class="sidebar-card">
               <h3 class="map-sidebar-title">Маршруты сезона</h3>
               <div class="route-list" id="mapRouteList"></div>
-            </div>
-
-            <div class="sidebar-card">
-              <h3 class="map-sidebar-title">Легенда</h3>
-              <div class="legend-list" id="legendList"></div>
             </div>
 
             <div class="sidebar-card">

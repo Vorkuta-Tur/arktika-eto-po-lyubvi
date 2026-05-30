@@ -332,6 +332,7 @@ const mapModeBadge = document.getElementById('mapModeBadge');
 const a11yToggle = document.getElementById('a11yToggle');
 const a11yPanel = document.getElementById('a11yPanel');
 const uiCollapseToggle = document.getElementById('uiCollapseToggle');
+const uiCollapseFloating = document.getElementById('uiCollapseFloating');
 
 let yandexMap = null;
 let yandexRouteLine = null;
@@ -386,10 +387,11 @@ function applyA11yState() {
 
   body.classList.toggle('a11y-enabled', !!a11yState.enabled);
   body.classList.toggle('a11y-collapsed', !!a11yState.enabled && !!a11yState.collapsed);
-  body.classList.toggle('ui-collapsed', !!a11yState.enabled && !!a11yState.uiCollapsed);
+  // Сворачивание верхнего UI работает независимо от режима слабовидящих.
+  body.classList.toggle('ui-collapsed', !!a11yState.uiCollapsed);
 
   body.classList.remove('a11y-font-md', 'a11y-font-lg', 'a11y-font-xl');
-  body.classList.add(`a11y-font-${a11yState.font}`);
+  body.classList.add(`a11y-font-${a11yState.enabled ? a11yState.font : 'md'}`);
 
   body.classList.toggle('theme-dark', a11yState.enabled && a11yState.theme === 'dark');
   body.classList.toggle('a11y-bw', a11yState.enabled && a11yState.bw === 'on');
@@ -412,12 +414,15 @@ function applyA11yState() {
   }
 
   // Синхронизация кнопки "свернуть/развернуть" в самой шапке.
-  if (uiCollapseToggle) {
-    const label = a11yState.uiCollapsed ? 'Развернуть верхнее UI' : 'Свернуть верхнее UI';
-    uiCollapseToggle.classList.toggle('is-active', !!a11yState.uiCollapsed);
-    uiCollapseToggle.setAttribute('aria-label', label);
-    uiCollapseToggle.setAttribute('title', label);
-  }
+  const label = a11yState.uiCollapsed ? 'Развернуть верхнее UI' : 'Свернуть верхнее UI';
+  [uiCollapseToggle, uiCollapseFloating].filter(Boolean).forEach((btn) => {
+    btn.classList.toggle('is-active', !!a11yState.uiCollapsed);
+    btn.setAttribute('aria-label', label);
+    btn.setAttribute('title', label);
+  });
+
+  // После смены масштаба/режима пересчитываем, где действительно нужен "разворот" текста.
+  updateWeatherExpandToggles();
 }
 
 function resetA11y() {
@@ -436,6 +441,36 @@ function syncHeaderStyle() {
   const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
   const isHero = window.scrollY + 80 < heroBottom;
   siteHeader.classList.toggle('is-hero', isHero);
+}
+
+function updateWeatherExpandToggles() {
+  // Показываем кнопку-галочку только если значение реально обрезается до "..."
+  document.querySelectorAll('.weather-detail').forEach((card) => {
+    const p = card.querySelector('p');
+    const btn = card.querySelector('[data-weather-expand]');
+    if (!p || !btn) return;
+
+    const wasExpanded = card.classList.contains('is-expanded');
+    if (wasExpanded) card.classList.remove('is-expanded');
+
+    // Для nowrap+ellipsis достаточно сравнить ширины.
+    const truncated = p.scrollWidth > p.clientWidth + 1;
+
+    if (wasExpanded) card.classList.add('is-expanded');
+
+    if (truncated) card.dataset.needsToggle = '1';
+    if (!truncated && !wasExpanded) card.dataset.needsToggle = '0';
+
+    const needsToggle = card.dataset.needsToggle === '1';
+    card.classList.toggle('is-truncated', needsToggle);
+
+    // Если не нужно — прячем кнопку совсем.
+    btn.style.display = needsToggle || wasExpanded ? '' : 'none';
+
+    const label = wasExpanded ? 'Свернуть' : 'Развернуть';
+    btn.setAttribute('aria-label', label);
+    btn.setAttribute('title', label);
+  });
 }
 
 function formatC(value) {
@@ -888,14 +923,8 @@ function renderMapSection() {
     `)
     .join('');
 
-  legendList.innerHTML = routes
-    .map((route) => `
-      <div class="legend-item">
-        <span class="dot" style="background:${route.pathColor};"></span>
-        <span>${route.title}${route.seasons.includes(state.season) ? '' : ' (неактивен)'}</span>
-      </div>
-    `)
-    .join('');
+  // Подблок "Легенда" удалён по ТЗ.
+  if (legendList) legendList.innerHTML = '';
 
   seasonBoxText.textContent =
     state.season === 'summer'
@@ -1022,12 +1051,27 @@ function renderAll() {
   renderPractical();
   renderBooking();
   syncHeaderStyle();
+  updateWeatherExpandToggles();
 }
 
 document.addEventListener('click', (event) => {
   const target = event.target;
   // Важно: клики по SVG (глаз) дают SVGElement, это НЕ HTMLElement.
   if (!(target instanceof Element)) return;
+
+  const weatherExpandBtn = target.closest('[data-weather-expand]');
+  if (weatherExpandBtn) {
+    const card = weatherExpandBtn.closest('.weather-detail');
+    if (card) {
+      card.classList.toggle('is-expanded');
+      const expanded = card.classList.contains('is-expanded');
+      const label = expanded ? 'Свернуть' : 'Развернуть';
+      weatherExpandBtn.setAttribute('aria-label', label);
+      weatherExpandBtn.setAttribute('title', label);
+    }
+    event.preventDefault();
+    return;
+  }
 
   const a11yToggleBtn = target.closest('#a11yToggle');
   if (a11yToggleBtn) {
@@ -1090,10 +1134,9 @@ document.addEventListener('click', (event) => {
 
   const uiCollapseBtn = target.closest('[data-a11y-ui-collapse]');
   if (uiCollapseBtn) {
-    a11yState.enabled = true;
     a11yState.uiCollapsed = !a11yState.uiCollapsed;
     // Если сворачиваем верхнее UI — логично убрать и панель настроек.
-    if (a11yState.uiCollapsed) a11yState.collapsed = true;
+    if (a11yState.enabled && a11yState.uiCollapsed) a11yState.collapsed = true;
     saveA11yState();
     applyA11yState();
     event.preventDefault();
@@ -1209,7 +1252,10 @@ menuToggle.addEventListener('click', () => {
 });
 
 window.addEventListener('scroll', syncHeaderStyle, { passive: true });
-window.addEventListener('resize', syncHeaderStyle);
+window.addEventListener('resize', () => {
+  syncHeaderStyle();
+  updateWeatherExpandToggles();
+});
 
 bookingForm.addEventListener('submit', (event) => {
   event.preventDefault();
