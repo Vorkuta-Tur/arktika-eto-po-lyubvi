@@ -9,10 +9,10 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="header">
+  <header class="header" id="siteHeader">
     <div class="container header-inner">
       <button class="brand" data-scroll="hero" type="button">
-        <span class="brand-mark" aria-hidden="true"></span>
+        <img class="brand-logo" src="img/SaytLogo.webp" alt="Воркута Тур" />
         <span class="brand-text">
           <span class="brand-title">Воркута Тур</span>
           <span class="brand-subtitle">Туристические маршруты</span>
@@ -24,7 +24,7 @@
         <button type="button" data-scroll="routes">Маршруты</button>
         <button type="button" data-scroll="map">Карта</button>
         <button type="button" data-scroll="objects">Объекты</button>
-        <button type="button" data-scroll="practical">Практическая информация</button>
+        <button type="button" data-scroll="practical">Информация</button>
         <button type="button" class="cta-btn" data-scroll="booking">Бронирование</button>
       </nav>
 
@@ -37,7 +37,7 @@
         <button type="button" data-scroll="routes">Маршруты</button>
         <button type="button" data-scroll="map">Карта</button>
         <button type="button" data-scroll="objects">Объекты</button>
-        <button type="button" data-scroll="practical">Практическая информация</button>
+        <button type="button" data-scroll="practical">Информация</button>
         <button type="button" data-scroll="booking">Бронирование</button>
       </div>
     </div>
@@ -45,15 +45,17 @@
 
   <main>
     <section class="hero summer" id="hero">
-      <div class="hero-glow"></div>
-
       <div class="container hero-grid">
-        <div>
-          <div class="badge" id="heroBadge">Сезонный туристический гид по Воркуте</div>
+        <div class="hero-spacer" aria-hidden="true"></div>
+        <div class="hero-stack">
+          <div class="hero-topbar">
+            <div class="season-toggle">
+              <button class="season-btn active summer" type="button" data-season="summer">Лето</button>
+              <button class="season-btn winter" type="button" data-season="winter">Зима</button>
+              <button class="season-btn now" type="button" data-season="now">Сейчас</button>
+            </div>
 
-          <div class="season-toggle">
-            <button class="season-btn active summer" type="button" data-season="summer">Лето</button>
-            <button class="season-btn winter" type="button" data-season="winter">Зима</button>
+            <div class="badge" id="heroBadge">Летний сезон по Воркуте</div>
           </div>
 
           <h1 class="hero-title">
@@ -61,19 +63,16 @@
           </h1>
 
           <p class="hero-text" id="heroText">
-            Сайт помогает быстро выбрать сезон, посмотреть погоду, открыть маршруты,
-            изучить объекты и перейти к бронированию услуг для поездки по городу.
+            Летние маршруты делают акцент на открытых площадках, культурных объектах и протяжённых прогулках по городу.
           </p>
 
           <div class="hero-actions">
             <button class="primary-btn" type="button" data-scroll="routes">Смотреть маршруты</button>
             <button class="secondary-btn" type="button" data-scroll="map">Открыть карту</button>
           </div>
-        </div>
 
-        <div class="hero-info-grid">
           <div class="weather-card">
-            <div class="badge">Погода в городе</div>
+            <div class="badge badge--weather">Погода в городе</div>
             <div class="temp" id="weatherTemp">+8°C</div>
             <p id="weatherText">Летний режим: умеренно прохладно, комфортно для прогулок.</p>
 
@@ -273,7 +272,7 @@
       <div class="footer-grid">
         <div>
           <div class="brand footer-brand">
-            <span class="brand-mark footer-brand-mark" aria-hidden="true"></span>
+            <img class="brand-logo footer-brand-logo" src="img/SaytLogo.webp" alt="Воркута Тур" />
             <span class="brand-text">
               <span class="brand-title footer-brand-title">Воркута Тур</span>
               <span class="brand-subtitle footer-brand-subtitle">Туристические маршруты</span>
@@ -291,7 +290,7 @@
             <button type="button" data-scroll="routes">Маршруты</button>
             <button type="button" data-scroll="map">Карта</button>
             <button type="button" data-scroll="objects">Объекты</button>
-            <button type="button" data-scroll="practical">Практическая информация</button>
+            <button type="button" data-scroll="practical">Информация</button>
           </div>
         </div>
 

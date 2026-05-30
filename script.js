@@ -1,10 +1,17 @@
+const defaultImage = 'img/hero-reindeer.webp';
+
+// Бесплатная погода без токена: Open‑Meteo (работает по координатам).
+// Документация: https://open-meteo.com/
+const VORKUTA_LAT = 67.4988;
+const VORKUTA_LON = 64.0522;
+
 const objects = [
   {
     id: 'victory-square',
     name: 'Парк Победы',
     lat: 67.4968,
     lng: 64.0610,
-    image: 'img/Победа.jpg',
+    image: 'img/ParkPobedy.webp',
     description: 'Одна из центральных городских площадок и удобная стартовая точка маршрутов.',
     category: 'История'
   },
@@ -13,7 +20,7 @@ const objects = [
     name: 'Памятник трудовой доблести',
     lat: 67.4979,
     lng: 64.0580,
-    image: 'img/Труд.jpg',
+    image: 'img/PamytnikTrudovoyDoblesti.webp',
     description: 'Мемориальное пространство, посвящённое шахтёрскому труду и истории города.',
     category: 'Память'
   },
@@ -22,7 +29,7 @@ const objects = [
     name: 'Монумент «Жертвам политических репрессий»',
     lat: 67.4925,
     lng: 64.0640,
-    image: 'img/Жертва.webp',
+    image: 'img/MonumentJertvamRepresiy.webp',
     description: 'Установлен на берегу реки Воркута, напротив поселка Рудник, где находились первые лагпункты и шахты Ухтпечлага.',
     category: 'Память'
   },
@@ -31,7 +38,7 @@ const objects = [
     name: 'Первооткрывателям Печорского угольного бассейна',
     lat: 67.4956,
     lng: 64.0548,
-    image: 'img/Шахтерскаяслава.jpg',
+    image: 'img/Pervootkr.webp',
     description: 'Памятный объект, связанный с историей освоения Печорского угольного бассейна и становлением Воркуты.',
     category: 'История'
   },
@@ -40,7 +47,7 @@ const objects = [
     name: 'Улица Московская',
     lat: 67.4991,
     lng: 64.0510,
-    image: 'img/Архитектура.jpg',
+    image: 'img/Moskowskay.webp',
     description: 'Улица, где хорошо читается исторический и архитектурный облик Воркуты.',
     category: 'Архитектура'
   },
@@ -49,7 +56,7 @@ const objects = [
     name: 'Набережная',
     lat: 67.5050,
     lng: 64.0800,
-    image: 'img/Набережная.jfif',
+    image: 'img/Naberejnay.webp',
     description: 'Панорамная точка с видом на городское пространство и северные ландшафты.',
     category: 'Панорамы'
   },
@@ -58,7 +65,7 @@ const objects = [
     name: 'Пионерский парк',
     lat: 67.5010,
     lng: 64.0460,
-    image: 'img/Пионер.jfif',
+    image: 'img/PianerPark.webp',
     description: 'Зелёная городская зона, удобная для пешеходной остановки летом.',
     category: 'Архитектура'
   },
@@ -67,7 +74,7 @@ const objects = [
     name: 'Драмтеатр',
     lat: 67.4982,
     lng: 64.0530,
-    image: 'img/Драм.webp',
+    image: 'img/Dramteatr.webp',
     description: 'Заметный городской объект, включаемый в архитектурные и культурные маршруты.',
     category: 'Культура'
   },
@@ -76,7 +83,7 @@ const objects = [
     name: 'Дворец творчества',
     lat: 67.4990,
     lng: 64.0490,
-    image: 'img/Дворец.jpg',
+    image: 'img/DvorecTvorchestva.webp',
     description: 'Культурно-образовательный объект в составе центрального ансамбля.',
     category: 'Культура'
   },
@@ -85,7 +92,7 @@ const objects = [
     name: 'Дворец культуры шахтеров',
     lat: 67.4910,
     lng: 64.0600,
-    image: 'img/Культ.webp',
+    image: 'img/DvorecKulturyShahterov.webp',
     description: 'Театральный объект, связанный с культурной жизнью города.',
     category: 'Культура'
   },
@@ -94,7 +101,7 @@ const objects = [
     name: 'Музейно-выставочный центр',
     lat: 67.4892,
     lng: 64.0570,
-    image: 'img/музей.webp',
+    image: 'img/MuseynoVistovoh.webp',
     description: 'Пространство, где можно дополнить прогулку историческими материалами и выставками.',
     category: 'Музеи'
   },
@@ -103,11 +110,24 @@ const objects = [
     name: 'Музей им. Войновского-Кригера',
     lat: 67.5020,
     lng: 64.0750,
-    image: 'img/Музей.jfif',
+    image: 'img/MuseyVoinKriger.webp',
     description: 'Музейная точка, связанная с историей края и городской памятью.',
     category: 'Музеи'
   }
 ];
+
+// Стартовые фото для обложек маршрутов (индекс в списке точек маршрута).
+// Условия от тебя:
+// - Ист.ядро — Парк Победы
+// - Память поколений — Музейно-выставочный центр
+// - Арх.наследие — Драмтеатр
+// - Природные контрасты — Набережная
+const routeCoverStartIndex = {
+  'historic-core': 0,
+  'memory-generations': 3,
+  'architecture-heritage': 2,
+  'natural-contrasts': 0
+};
 
 const routes = [
   {
@@ -118,7 +138,7 @@ const routes = [
     pathColor: '#0ea5e9',
     seasons: ['summer', 'winter'],
     startPoint: 'Парк Победы',
-    image: 'img/Победа.jpg',
+    image: defaultImage,
     description: 'Маршрут по историческому ядру Воркуты: от Парка Победы через памятные городские объекты к монументам и улице Московской.',
     points: ['victory-square', 'memory-monument', 'pioneers-monument', 'moskovskaya']
   },
@@ -130,7 +150,7 @@ const routes = [
     pathColor: '#14b8a6',
     seasons: ['summer'],
     startPoint: 'Улица Московская',
-    image: 'img/Архитектура.jpg',
+    image: defaultImage,
     description: 'Пешеходный маршрут по выразительным фасадам, ансамблям и культурным объектам центральной части города.',
     points: ['moskovskaya', 'geologists-square', 'drama-theatre', 'palace-creativity']
   },
@@ -142,7 +162,7 @@ const routes = [
     pathColor: '#8b5cf6',
     seasons: ['summer', 'winter'],
     startPoint: 'Монумент «Память»',
-    image: 'img/Чернов.jpg',
+    image: defaultImage,
     description: 'Маршрут, посвящённый символическим объектам, мемориалам и музейным пространствам города.',
     points: ['memory-monument', 'miners-alley', 'puppet-theatre', 'museum-center']
   },
@@ -154,7 +174,7 @@ const routes = [
     pathColor: '#f97316',
     seasons: ['winter'],
     startPoint: 'Набережная',
-    image: 'img/Природа.webp',
+    image: defaultImage,
     description: 'Автомаршрут к панорамным точкам, набережной и музейным остановкам с учётом зимней логистики и короткого светового дня.',
     points: ['embankment', 'voinovsky-museum', 'museum-center', 'victory-square']
   }
@@ -238,12 +258,45 @@ const weatherBySeason = {
 
 const state = {
   season: 'summer',
+  weatherMode: 'summer', // 'summer' | 'winter' | 'now'
   selectedRouteId: 'historic-core',
   activeBookingType: 'hotel',
-  selectedService: ''
+  selectedService: '',
+  routeCoverIndex: {}
 };
 
+function getRoutePhotos(route) {
+  return getRouteObjects(route).map((point) => point.image).filter(Boolean);
+}
+
+function ensureRouteCoverIndex(routeId, photosLen) {
+  if (!state.routeCoverIndex) state.routeCoverIndex = {};
+  if (typeof state.routeCoverIndex[routeId] !== 'number') {
+    state.routeCoverIndex[routeId] = routeCoverStartIndex[routeId] ?? 0;
+  }
+  const len = typeof photosLen === 'number' ? photosLen : 0;
+  if (len > 0) {
+    state.routeCoverIndex[routeId] = ((state.routeCoverIndex[routeId] % len) + len) % len;
+  } else {
+    state.routeCoverIndex[routeId] = 0;
+  }
+}
+
+function updateRouteCoverImage(routeId) {
+  const route = routes.find((r) => r.id === routeId);
+  if (!route) return;
+  const photos = getRoutePhotos(route);
+  ensureRouteCoverIndex(routeId, photos.length);
+  const idx = state.routeCoverIndex[routeId] ?? 0;
+  const img = document.querySelector(`[data-route-cover-img="${routeId}"]`);
+  if (!(img instanceof HTMLImageElement)) return;
+  const src = photos[idx] || route.image || defaultImage;
+  img.src = src;
+  img.alt = `${route.title} — фото ${idx + 1} из ${Math.max(photos.length, 1)}`;
+}
+
 const heroSection = document.getElementById('hero');
+const siteHeader = document.getElementById('siteHeader');
 const heroBadge = document.getElementById('heroBadge');
 const heroAccent = document.getElementById('heroAccent');
 const heroText = document.getElementById('heroText');
@@ -280,6 +333,189 @@ const mapModeBadge = document.getElementById('mapModeBadge');
 let yandexMap = null;
 let yandexRouteLine = null;
 let yandexPointCollection = null;
+
+const liveWeatherState = {
+  status: 'idle', // idle | loading | ready | error | no_token
+  updatedAt: null,
+  data: null,
+  errorMessage: ''
+};
+
+function syncHeaderStyle() {
+  if (!siteHeader || !heroSection) return;
+  // Пока пользователь находится в hero-секции — делаем шапку "прозрачной", как на макете.
+  const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+  const isHero = window.scrollY + 80 < heroBottom;
+  siteHeader.classList.toggle('is-hero', isHero);
+}
+
+function formatC(value) {
+  if (typeof value !== 'number' || Number.isNaN(value)) return '—';
+  const n = Math.round(value);
+  return `${n > 0 ? '+' : ''}${n}°C`;
+}
+
+function formatMS(value) {
+  if (typeof value !== 'number' || Number.isNaN(value)) return '—';
+  return `${Math.round(value)} м/с`;
+}
+
+function getAutoSeason() {
+  // Простая логика по месяцу (можно подстроить при необходимости):
+  // Для Воркуты лето короткое, поэтому по умолчанию:
+  // июнь–август = "лето", остальное = "зима".
+  const m = new Date().getMonth() + 1; // 1..12
+  return m >= 6 && m <= 8 ? 'summer' : 'winter';
+}
+
+function formatPercent(value) {
+  if (typeof value !== 'number' || Number.isNaN(value)) return '—';
+  return `${Math.round(value)}%`;
+}
+
+function dayLengthLabel(hours) {
+  if (typeof hours !== 'number' || Number.isNaN(hours)) return '—';
+  if (hours < 6) return 'Короткий';
+  if (hours < 10) return 'Средний';
+  return 'Длинный';
+}
+
+function buildAdvice({ tempC, windMS, precipProb, precipMm }) {
+  const tips = [];
+  if (typeof tempC === 'number') {
+    if (tempC <= -10) tips.push('Тёплая экипировка');
+    else if (tempC <= 0) tips.push('Тёплая куртка');
+    else if (tempC <= 10) tips.push('Лёгкая ветровка');
+    else tips.push('Лёгкая одежда');
+  }
+
+  const wet = (typeof precipProb === 'number' && precipProb >= 40) || (typeof precipMm === 'number' && precipMm > 0);
+  if (wet) tips.push('зонт/непромокаемая обувь');
+
+  const windMax = Math.max(
+    typeof windMS === 'number' ? windMS : -Infinity,
+    typeof arguments[0]?.windGustMS === 'number' ? arguments[0].windGustMS : -Infinity
+  );
+  if (Number.isFinite(windMax) && windMax >= 8) tips.push('защита от ветра');
+
+  return tips.length ? tips.join(', ') : 'По погоде';
+}
+
+function describeWeatherCode(code) {
+  const map = new Map([
+    [0, 'Ясно'],
+    [1, 'Преимущественно ясно'],
+    [2, 'Переменная облачность'],
+    [3, 'Пасмурно'],
+    [45, 'Туман'],
+    [48, 'Туман (изморозь)'],
+    [51, 'Морось (слабая)'],
+    [53, 'Морось (умеренная)'],
+    [55, 'Морось (сильная)'],
+    [56, 'Ледяная морось (слабая)'],
+    [57, 'Ледяная морось (сильная)'],
+    [61, 'Дождь (слабый)'],
+    [63, 'Дождь (умеренный)'],
+    [65, 'Дождь (сильный)'],
+    [66, 'Ледяной дождь (слабый)'],
+    [67, 'Ледяной дождь (сильный)'],
+    [71, 'Снег (слабый)'],
+    [73, 'Снег (умеренный)'],
+    [75, 'Снег (сильный)'],
+    [77, 'Снежные зёрна'],
+    [80, 'Ливни (слабые)'],
+    [81, 'Ливни (умеренные)'],
+    [82, 'Ливни (сильные)'],
+    [85, 'Снегопад (слабый)'],
+    [86, 'Снегопад (сильный)'],
+    [95, 'Гроза'],
+    [96, 'Гроза с градом (слабая)'],
+    [99, 'Гроза с градом (сильная)']
+  ]);
+
+  if (typeof code !== 'number' || Number.isNaN(code)) return '';
+  return map.get(code) || `Код погоды: ${code}`;
+}
+
+async function fetchLiveWeatherIfNeeded(force = false) {
+  const now = Date.now();
+  const cacheMs = 10 * 60 * 1000; // 10 minutes
+
+  if (!force && liveWeatherState.updatedAt && now - liveWeatherState.updatedAt < cacheMs) {
+    return;
+  }
+
+  try {
+    liveWeatherState.status = 'loading';
+    liveWeatherState.errorMessage = '';
+
+    const url =
+      `https://api.open-meteo.com/v1/forecast?latitude=${VORKUTA_LAT}&longitude=${VORKUTA_LON}` +
+      `&current=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,wind_gusts_10m` +
+      `&hourly=precipitation_probability` +
+      `&daily=sunrise,sunset,daylight_duration` +
+      `&wind_speed_unit=ms&timezone=auto`;
+
+    const res = await fetch(url);
+
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`);
+    }
+
+    const json = await res.json();
+    const current = json && json.current ? json.current : null;
+    if (!current) throw new Error('Неверный ответ сервиса погоды');
+
+    // Вероятность осадков: берём почасовое значение для текущего часа (если есть).
+    let precipProb = null;
+    const hourly = json && json.hourly ? json.hourly : null;
+    if (hourly && Array.isArray(hourly.time) && Array.isArray(hourly.precipitation_probability)) {
+      const t = current.time;
+      let idx = hourly.time.indexOf(t);
+      if (idx === -1) {
+        // если точного совпадения нет — ищем ближайшее время
+        const curMs = Date.parse(t);
+        let best = -1;
+        let bestDiff = Infinity;
+        for (let i = 0; i < hourly.time.length; i++) {
+          const ms = Date.parse(hourly.time[i]);
+          const diff = Math.abs(ms - curMs);
+          if (diff < bestDiff) {
+            bestDiff = diff;
+            best = i;
+          }
+        }
+        idx = best;
+      }
+      if (idx >= 0) precipProb = hourly.precipitation_probability[idx];
+    }
+
+    // Длина дня (секунды) — берём первый день (сегодня).
+    let daylightHours = null;
+    const daily = json && json.daily ? json.daily : null;
+    if (daily && Array.isArray(daily.daylight_duration) && typeof daily.daylight_duration[0] === 'number') {
+      daylightHours = daily.daylight_duration[0] / 3600;
+    }
+
+    liveWeatherState.data = {
+      tempC: current.temperature_2m,
+      desc: describeWeatherCode(current.weather_code),
+      windMS: current.wind_speed_10m,
+      windGustMS: current.wind_gusts_10m,
+      // Осадки: мм за час (по текущим данным Open‑Meteo).
+      precipMm: current.precipitation,
+      precipProb,
+      daylightHours
+    };
+
+    liveWeatherState.status = 'ready';
+    liveWeatherState.updatedAt = now;
+  } catch (e) {
+    liveWeatherState.status = 'error';
+    liveWeatherState.data = null;
+    liveWeatherState.errorMessage = e instanceof Error ? e.message : String(e);
+  }
+}
 
 function getObjectById(id) {
   return objects.find((item) => item.id === id);
@@ -407,7 +643,11 @@ function renderHero() {
 
   heroSection.className = `hero ${state.season}`;
   heroAccent.className = state.season;
-  heroBadge.textContent = state.season === 'summer' ? 'Летний сезон по Воркуте' : 'Зимний сезон по Воркуте';
+  const autoSeason = state.weatherMode === 'now' ? getAutoSeason() : null;
+  heroBadge.textContent =
+    state.season === 'summer'
+      ? (state.weatherMode === 'now' ? 'Сейчас • Авто: Лето' : 'Летний сезон по Воркуте')
+      : (state.weatherMode === 'now' ? 'Сейчас • Авто: Зима' : 'Зимний сезон по Воркуте');
 
   heroText.textContent =
     state.season === 'summer'
@@ -415,15 +655,57 @@ function renderHero() {
       : 'Зимние маршруты учитывают сокращённый световой день, точки обогрева и более компактную логистику перемещения.';
 
   heroRouteCount.textContent = String(availableRoutes.length);
-  weatherTemp.textContent = weather.temp;
-  weatherText.textContent = weather.text;
-  weatherWind.textContent = weather.wind;
-  weatherPrecip.textContent = weather.precip;
-  weatherLight.textContent = weather.light;
-  weatherAdvice.textContent = weather.advice;
+
+  // Weather block: can show seasonal mock data or live "Now" data.
+  if (state.weatherMode === 'now') {
+    if (liveWeatherState.status === 'idle') {
+      // kick off load (async)
+      fetchLiveWeatherIfNeeded(true).then(() => renderHero());
+      liveWeatherState.status = 'loading';
+    }
+
+    if (liveWeatherState.status === 'loading') {
+      weatherTemp.textContent = '…';
+      weatherText.textContent = 'Загружаем текущую погоду…';
+      weatherWind.textContent = '…';
+      weatherPrecip.textContent = '…';
+      weatherLight.textContent = weather.light;
+      weatherAdvice.textContent = weather.advice;
+    } else if (liveWeatherState.status === 'ready' && liveWeatherState.data) {
+      const d = liveWeatherState.data;
+      weatherTemp.textContent = formatC(d.tempC);
+      weatherText.textContent = d.desc ? `Сейчас: ${d.desc}` : 'Сейчас: данные получены.';
+      weatherWind.textContent =
+        typeof d.windGustMS === 'number'
+          ? `${formatMS(d.windMS)} (порывы до ${formatMS(d.windGustMS)})`
+          : formatMS(d.windMS);
+      // Осадки — показываем вероятность (%), если доступна. Иначе — мм.
+      weatherPrecip.textContent =
+        typeof d.precipProb === 'number'
+          ? formatPercent(d.precipProb)
+          : (typeof d.precipMm === 'number' ? `${d.precipMm} мм` : '—');
+
+      weatherLight.textContent = dayLengthLabel(d.daylightHours);
+      weatherAdvice.textContent = buildAdvice(d);
+    } else {
+      weatherTemp.textContent = '—';
+      weatherText.textContent = `Не удалось загрузить погоду (Сейчас): ${liveWeatherState.errorMessage || 'ошибка'}`;
+      weatherWind.textContent = '—';
+      weatherPrecip.textContent = '—';
+      weatherLight.textContent = '—';
+      weatherAdvice.textContent = '—';
+    }
+  } else {
+    weatherTemp.textContent = weather.temp;
+    weatherText.textContent = weather.text;
+    weatherWind.textContent = weather.wind;
+    weatherPrecip.textContent = weather.precip;
+    weatherLight.textContent = weather.light;
+    weatherAdvice.textContent = weather.advice;
+  }
 
   document.querySelectorAll('.season-btn').forEach((btn) => {
-    btn.classList.toggle('active', btn.dataset.season === state.season);
+    btn.classList.toggle('active', btn.dataset.season === state.weatherMode);
   });
 }
 
@@ -437,11 +719,24 @@ function renderRoutes() {
     .map((route) => {
       const available = route.seasons.includes(state.season);
       const routeObjects = getRouteObjects(route);
+      const photos = getRoutePhotos(route);
+      ensureRouteCoverIndex(route.id, photos.length);
+      const coverIndex = state.routeCoverIndex[route.id] ?? 0;
+      const coverSrc = photos[coverIndex] || route.image || defaultImage;
+      const hasCarousel = photos.length > 1;
 
       return `
         <div class="route-card" style="opacity:${available ? 1 : 0.55};">
           <div class="route-cover">
-            <img src="${route.image}" alt="${route.title}" />
+            <img class="route-cover-img" data-route-cover-img="${route.id}" src="${coverSrc}" alt="${route.title}" />
+            ${
+              hasCarousel
+                ? `
+                  <button class="route-cover-arrow prev" type="button" data-route-cover-prev="${route.id}" aria-label="Предыдущее фото">‹</button>
+                  <button class="route-cover-arrow next" type="button" data-route-cover-next="${route.id}" aria-label="Следующее фото">›</button>
+                `
+                : ''
+            }
             <div class="route-meta">
               <span>🕒 ${route.duration}</span>
               <span>📍 ${route.distance}</span>
@@ -620,11 +915,42 @@ function renderAll() {
   renderObjects();
   renderPractical();
   renderBooking();
+  syncHeaderStyle();
 }
 
 document.addEventListener('click', (event) => {
   const target = event.target;
   if (!(target instanceof HTMLElement)) return;
+
+  const prevCoverBtn = target.closest('[data-route-cover-prev]');
+  if (prevCoverBtn) {
+    const routeId = prevCoverBtn.getAttribute('data-route-cover-prev');
+    const route = routes.find((r) => r.id === routeId);
+    if (routeId && route) {
+      const photos = getRoutePhotos(route);
+      ensureRouteCoverIndex(routeId, photos.length);
+      const len = Math.max(photos.length, 1);
+      state.routeCoverIndex[routeId] = ((state.routeCoverIndex[routeId] - 1) % len + len) % len;
+      updateRouteCoverImage(routeId);
+    }
+    event.preventDefault();
+    return;
+  }
+
+  const nextCoverBtn = target.closest('[data-route-cover-next]');
+  if (nextCoverBtn) {
+    const routeId = nextCoverBtn.getAttribute('data-route-cover-next');
+    const route = routes.find((r) => r.id === routeId);
+    if (routeId && route) {
+      const photos = getRoutePhotos(route);
+      ensureRouteCoverIndex(routeId, photos.length);
+      const len = Math.max(photos.length, 1);
+      state.routeCoverIndex[routeId] = (state.routeCoverIndex[routeId] + 1) % len;
+      updateRouteCoverImage(routeId);
+    }
+    event.preventDefault();
+    return;
+  }
 
   const scrollTarget = target.closest('[data-scroll]');
   if (scrollTarget) {
@@ -638,8 +964,25 @@ document.addEventListener('click', (event) => {
 
   const seasonBtn = target.closest('[data-season]');
   if (seasonBtn) {
-    state.season = seasonBtn.getAttribute('data-season');
-    renderAll();
+    const nextMode = seasonBtn.getAttribute('data-season');
+    if (!nextMode) return;
+
+    // Summer/Winter switch:
+    // - 'summer'/'winter' => меняем сезон и показываем сезонные данные.
+    // - 'now' => сезон выбирается автоматически по дате, а погода берётся "сейчас".
+    if (nextMode === 'now') {
+      // При "Сейчас" дизайн автоматически выбирается по текущей дате.
+      state.season = getAutoSeason();
+      state.weatherMode = 'now';
+      // Перерисовываем ВЕСЬ интерфейс, чтобы сезон реально переключал маршруты/карту/текст.
+      liveWeatherState.status = 'idle';
+      renderAll();
+      fetchLiveWeatherIfNeeded(true).then(() => renderHero());
+    } else {
+      state.season = nextMode;
+      state.weatherMode = nextMode;
+      renderAll();
+    }
   }
 
   const mapSeasonBtn = target.closest('[data-map-season]');
@@ -679,6 +1022,9 @@ menuToggle.addEventListener('click', () => {
   mobileNav.classList.toggle('open');
   menuToggle.textContent = mobileNav.classList.contains('open') ? '×' : '☰';
 });
+
+window.addEventListener('scroll', syncHeaderStyle, { passive: true });
+window.addEventListener('resize', syncHeaderStyle);
 
 bookingForm.addEventListener('submit', (event) => {
   event.preventDefault();
