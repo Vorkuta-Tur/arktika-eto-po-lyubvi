@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Воркута Тур</title>
 
+  <!-- Ускоряем загрузку главного фонового изображения (LCP). -->
+  <link rel="preload" as="image" href="img/hero-reindeer.webp" type="image/webp" fetchpriority="high" />
+
   <script src="https://api-maps.yandex.ru/2.1/?apikey=8cbbc9d2-0491-46ba-8be0-84f7bc4c73f8&lang=ru_RU"></script>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -26,6 +29,34 @@
         <button type="button" data-scroll="objects">Объекты</button>
         <button type="button" data-scroll="practical">Информация</button>
         <button type="button" class="cta-btn" data-scroll="booking">Бронирование</button>
+        <button type="button" class="a11y-btn" id="a11yToggle" aria-label="Режим для слабовидящих" title="Режим для слабовидящих">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+              d="M12 5c5.5 0 9.6 5 9.6 7s-4.1 7-9.6 7S2.4 14 2.4 12 6.5 5 12 5Zm0 2C7.6 7 4.6 11 4.6 12s3 5 7.4 5 7.4-4 7.4-5-3-5-7.4-5Zm0 2.2A2.8 2.8 0 1 1 9.2 12 2.8 2.8 0 0 1 12 9.2Zm0 1.8A1 1 0 1 0 13 12a1 1 0 0 0-1-1Z"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
+        <button
+          type="button"
+          class="a11y-btn ui-collapse-btn"
+          id="uiCollapseToggle"
+          data-a11y-ui-collapse="1"
+          aria-label="Свернуть верхнее UI"
+          title="Свернуть верхнее UI"
+        >
+          <!-- "Галочка" (chevron) вверх/вниз -->
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+              d="M6 9l6 6 6-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
       </nav>
 
       <button class="menu-btn" id="menuToggle" type="button">☰</button>
@@ -39,6 +70,45 @@
         <button type="button" data-scroll="objects">Объекты</button>
         <button type="button" data-scroll="practical">Информация</button>
         <button type="button" data-scroll="booking">Бронирование</button>
+      </div>
+    </div>
+
+    <!-- Панель режима для слабовидящих (появляется по кнопке-глазу) -->
+    <div class="container a11y-panel" id="a11yPanel" aria-label="Настройки режима для слабовидящих">
+      <div class="a11y-panel-inner">
+        <div class="a11y-group">
+          <div class="a11y-label">Размер шрифта</div>
+          <div class="a11y-controls">
+            <button type="button" class="a11y-chip" data-a11y-font="md">A</button>
+            <button type="button" class="a11y-chip" data-a11y-font="lg">A+</button>
+            <button type="button" class="a11y-chip" data-a11y-font="xl">A++</button>
+          </div>
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">Цвет сайта</div>
+          <div class="a11y-controls">
+            <button type="button" class="a11y-chip" data-a11y-theme="light">Светлая</button>
+            <button type="button" class="a11y-chip" data-a11y-theme="dark">Тёмная</button>
+          </div>
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">Изображение</div>
+          <div class="a11y-controls">
+            <button type="button" class="a11y-chip" data-a11y-bw="off">Цвет</button>
+            <button type="button" class="a11y-chip" data-a11y-bw="on">Ч/Б</button>
+          </div>
+        </div>
+
+        <div class="a11y-group">
+          <div class="a11y-label">Настройки</div>
+          <div class="a11y-controls">
+            <button type="button" class="a11y-chip danger" data-a11y-reset="1">Обычная версия</button>
+            <button type="button" class="a11y-chip" data-a11y-collapse="1">Свернуть</button>
+            <button type="button" class="a11y-chip" data-a11y-ui-collapse="1">Свернуть верхнее UI</button>
+          </div>
+        </div>
       </div>
     </div>
   </header>

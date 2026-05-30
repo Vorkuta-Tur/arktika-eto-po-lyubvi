@@ -329,6 +329,9 @@ const mobileNav = document.getElementById('mobileNav');
 const menuToggle = document.getElementById('menuToggle');
 const mapCanvas = document.getElementById('mapCanvas');
 const mapModeBadge = document.getElementById('mapModeBadge');
+const a11yToggle = document.getElementById('a11yToggle');
+const a11yPanel = document.getElementById('a11yPanel');
+const uiCollapseToggle = document.getElementById('uiCollapseToggle');
 
 let yandexMap = null;
 let yandexRouteLine = null;
@@ -338,8 +341,94 @@ const liveWeatherState = {
   status: 'idle', // idle | loading | ready | error | no_token
   updatedAt: null,
   data: null,
-  errorMessage: ''
+  errorMessage: '',
+  retryCount: 0
 };
+
+// ---- Режим для слабовидящих (простая реализация с сохранением состояния) ----
+const A11Y_STORAGE_KEY = 'vorkuta_a11y_v1';
+
+let a11yState = {
+  enabled: false,
+  collapsed: false,
+  uiCollapsed: false,
+  font: 'md', // md | lg | xl
+  theme: 'light', // light | dark
+  bw: 'off' // off | on
+};
+
+function loadA11yState() {
+  try {
+    const raw = localStorage.getItem(A11Y_STORAGE_KEY);
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === 'object') {
+      a11yState = { ...a11yState, ...parsed };
+      // Совместимость со старым значением "sm".
+      if (a11yState.font === 'sm') a11yState.font = 'md';
+    }
+  } catch (_) {
+    // ignore
+  }
+}
+
+function saveA11yState() {
+  try {
+    localStorage.setItem(A11Y_STORAGE_KEY, JSON.stringify(a11yState));
+  } catch (_) {
+    // ignore
+  }
+}
+
+function applyA11yState() {
+  const body = document.body;
+  if (!body) return;
+
+  body.classList.toggle('a11y-enabled', !!a11yState.enabled);
+  body.classList.toggle('a11y-collapsed', !!a11yState.enabled && !!a11yState.collapsed);
+  body.classList.toggle('ui-collapsed', !!a11yState.enabled && !!a11yState.uiCollapsed);
+
+  body.classList.remove('a11y-font-md', 'a11y-font-lg', 'a11y-font-xl');
+  body.classList.add(`a11y-font-${a11yState.font}`);
+
+  body.classList.toggle('theme-dark', a11yState.enabled && a11yState.theme === 'dark');
+  body.classList.toggle('a11y-bw', a11yState.enabled && a11yState.bw === 'on');
+
+  // Подсветка выбранных чипов.
+  if (a11yPanel) {
+    a11yPanel.querySelectorAll('[data-a11y-font]').forEach((btn) => {
+      btn.classList.toggle('is-active', btn.getAttribute('data-a11y-font') === a11yState.font);
+    });
+    a11yPanel.querySelectorAll('[data-a11y-theme]').forEach((btn) => {
+      btn.classList.toggle('is-active', btn.getAttribute('data-a11y-theme') === a11yState.theme);
+    });
+    a11yPanel.querySelectorAll('[data-a11y-bw]').forEach((btn) => {
+      btn.classList.toggle('is-active', btn.getAttribute('data-a11y-bw') === a11yState.bw);
+    });
+    a11yPanel.querySelectorAll('[data-a11y-ui-collapse]').forEach((btn) => {
+      btn.classList.toggle('is-active', !!a11yState.uiCollapsed);
+      btn.textContent = a11yState.uiCollapsed ? 'Развернуть верхнее UI' : 'Свернуть верхнее UI';
+    });
+  }
+
+  // Синхронизация кнопки "свернуть/развернуть" в самой шапке.
+  if (uiCollapseToggle) {
+    const label = a11yState.uiCollapsed ? 'Развернуть верхнее UI' : 'Свернуть верхнее UI';
+    uiCollapseToggle.classList.toggle('is-active', !!a11yState.uiCollapsed);
+    uiCollapseToggle.setAttribute('aria-label', label);
+    uiCollapseToggle.setAttribute('title', label);
+  }
+}
+
+function resetA11y() {
+  a11yState = { enabled: false, collapsed: false, uiCollapsed: false, font: 'md', theme: 'light', bw: 'off' };
+  try {
+    localStorage.removeItem(A11Y_STORAGE_KEY);
+  } catch (_) {
+    // ignore
+  }
+  applyA11yState();
+}
 
 function syncHeaderStyle() {
   if (!siteHeader || !heroSection) return;
@@ -510,6 +599,7 @@ async function fetchLiveWeatherIfNeeded(force = false) {
 
     liveWeatherState.status = 'ready';
     liveWeatherState.updatedAt = now;
+    liveWeatherState.retryCount = 0;
   } catch (e) {
     liveWeatherState.status = 'error';
     liveWeatherState.data = null;
@@ -688,12 +778,28 @@ function renderHero() {
       weatherLight.textContent = dayLengthLabel(d.daylightHours);
       weatherAdvice.textContent = buildAdvice(d);
     } else {
-      weatherTemp.textContent = '—';
-      weatherText.textContent = `Не удалось загрузить погоду (Сейчас): ${liveWeatherState.errorMessage || 'ошибка'}`;
-      weatherWind.textContent = '—';
-      weatherPrecip.textContent = '—';
-      weatherLight.textContent = '—';
-      weatherAdvice.textContent = '—';
+      // В режиме "Сейчас" не показываем пользователю технические ошибки типа "Failed to fetch".
+      // Делаем мягкий фолбэк на сезонные данные + один повтор запроса.
+      const autoSeason = getAutoSeason();
+      const fallback = weatherBySeason[autoSeason] || weather;
+
+      weatherTemp.textContent = fallback.temp;
+      weatherText.textContent = 'Сейчас: данные временно недоступны. Показаны ориентировочные значения.';
+      weatherWind.textContent = fallback.wind;
+      weatherPrecip.textContent = fallback.precip;
+      weatherLight.textContent = fallback.light;
+      weatherAdvice.textContent = fallback.advice;
+
+      const isFetchError =
+        typeof liveWeatherState.errorMessage === 'string' &&
+        /failed to fetch|networkerror|load failed/i.test(liveWeatherState.errorMessage);
+
+      if (isFetchError && liveWeatherState.retryCount < 1) {
+        liveWeatherState.retryCount += 1;
+        setTimeout(() => {
+          fetchLiveWeatherIfNeeded(true).then(() => renderHero());
+        }, 1200);
+      }
     }
   } else {
     weatherTemp.textContent = weather.temp;
@@ -728,7 +834,7 @@ function renderRoutes() {
       return `
         <div class="route-card" style="opacity:${available ? 1 : 0.55};">
           <div class="route-cover">
-            <img class="route-cover-img" data-route-cover-img="${route.id}" src="${coverSrc}" alt="${route.title}" />
+            <img class="route-cover-img" data-route-cover-img="${route.id}" src="${coverSrc}" alt="${route.title}" loading="lazy" decoding="async" />
             ${
               hasCarousel
                 ? `
@@ -746,7 +852,7 @@ function renderRoutes() {
           <div class="route-body">
             <div class="route-title-line">
               <span class="dot" style="background:${route.pathColor}; width:14px; height:14px;"></span>
-              <strong style="font-size:22px;">${route.title}</strong>
+              <strong class="route-title">${route.title}</strong>
             </div>
             <p>${route.description}</p>
             <div class="route-points">
@@ -824,8 +930,8 @@ function renderObjects() {
   objectGrid.innerHTML = objects
     .map((point) => `
       <div class="object-card">
-        <img src="${point.image}" alt="${point.name}" />
-        <strong style="font-size:20px;">${point.name}</strong>
+        <img src="${point.image}" alt="${point.name}" loading="lazy" decoding="async" />
+        <strong class="object-name">${point.name}</strong>
         <p>${point.description}</p>
         <div class="object-meta">Категория: ${point.category}</div>
       </div>
@@ -863,10 +969,10 @@ function renderBooking() {
 
   bookingOptionsContainer.innerHTML = current.items
     .map((item) => `
-      <button class="booking-option ${state.selectedService === item.name ? 'active' : ''}" type="button" data-service-name="${item.name}">
+            <button class="booking-option ${state.selectedService === item.name ? 'active' : ''}" type="button" data-service-name="${item.name}">
         <div class="option-top">
           <div>
-            <strong style="font-size:20px;">${item.name}</strong>
+                  <strong class="booking-item-name">${item.name}</strong>
             <div class="rating">★ ${item.rating}</div>
           </div>
           <div class="option-price">${item.price}</div>
@@ -920,7 +1026,86 @@ function renderAll() {
 
 document.addEventListener('click', (event) => {
   const target = event.target;
-  if (!(target instanceof HTMLElement)) return;
+  // Важно: клики по SVG (глаз) дают SVGElement, это НЕ HTMLElement.
+  if (!(target instanceof Element)) return;
+
+  const a11yToggleBtn = target.closest('#a11yToggle');
+  if (a11yToggleBtn) {
+    if (!a11yState.enabled) {
+      a11yState.enabled = true;
+      a11yState.collapsed = false;
+    } else {
+      // Поведение как в ТЗ: если панель свернута — по глазу возвращаем панель,
+      // если открыта — по глазу можно быстро свернуть.
+      a11yState.collapsed = !a11yState.collapsed;
+    }
+    saveA11yState();
+    applyA11yState();
+    event.preventDefault();
+    return;
+  }
+
+  const fontBtn = target.closest('[data-a11y-font]');
+  if (fontBtn) {
+    a11yState.enabled = true;
+    a11yState.collapsed = false;
+    a11yState.font = fontBtn.getAttribute('data-a11y-font') || 'md';
+    saveA11yState();
+    applyA11yState();
+    event.preventDefault();
+    return;
+  }
+
+  const themeBtn = target.closest('[data-a11y-theme]');
+  if (themeBtn) {
+    a11yState.enabled = true;
+    a11yState.collapsed = false;
+    a11yState.theme = themeBtn.getAttribute('data-a11y-theme') || 'light';
+    saveA11yState();
+    applyA11yState();
+    event.preventDefault();
+    return;
+  }
+
+  const bwBtn = target.closest('[data-a11y-bw]');
+  if (bwBtn) {
+    a11yState.enabled = true;
+    a11yState.collapsed = false;
+    a11yState.bw = bwBtn.getAttribute('data-a11y-bw') || 'off';
+    saveA11yState();
+    applyA11yState();
+    event.preventDefault();
+    return;
+  }
+
+  const collapseBtn = target.closest('[data-a11y-collapse]');
+  if (collapseBtn) {
+    a11yState.enabled = true;
+    a11yState.collapsed = true;
+    saveA11yState();
+    applyA11yState();
+    event.preventDefault();
+    return;
+  }
+
+  const uiCollapseBtn = target.closest('[data-a11y-ui-collapse]');
+  if (uiCollapseBtn) {
+    a11yState.enabled = true;
+    a11yState.uiCollapsed = !a11yState.uiCollapsed;
+    // Если сворачиваем верхнее UI — логично убрать и панель настроек.
+    if (a11yState.uiCollapsed) a11yState.collapsed = true;
+    saveA11yState();
+    applyA11yState();
+    event.preventDefault();
+    return;
+  }
+
+  const resetBtn = target.closest('[data-a11y-reset]');
+  if (resetBtn) {
+    resetA11y();
+    event.preventDefault();
+    return;
+  }
 
   const prevCoverBtn = target.closest('[data-route-cover-prev]');
   if (prevCoverBtn) {
@@ -1042,6 +1227,8 @@ bookingForm.addEventListener('submit', (event) => {
 fillGuests();
 
 function startApp() {
+  loadA11yState();
+  applyA11yState();
   renderAll();
 }
 

@@ -108,8 +108,8 @@ img { display: block; max-width: 100%; }
   width: 42px;
   height: 42px;
   border-radius: 14px;
-  background: white;
-  border: 1px solid #cfe5f3;
+  background: var(--surface);
+  border: 1px solid var(--border);
   box-shadow: 0 10px 24px rgba(2, 132, 199, 0.12);
   flex-shrink: 0;
   object-fit: cover;
@@ -122,18 +122,18 @@ img { display: block; max-width: 100%; }
 }
 
 .brand-title {
-  font-size: 18px;
+  font-size: calc(18px * var(--a11y-scale));
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 
 .brand-subtitle {
   margin-top: 4px;
-  font-size: 11px;
+  font-size: calc(11px * var(--a11y-scale));
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #64748b;
+  color: var(--muted);
 }
 
 .nav {
@@ -151,6 +151,203 @@ img { display: block; max-width: 100%; }
   color: var(--muted);
   font-weight: 700;
 }
+
+.a11y-btn {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-dark);
+  box-shadow: 0 10px 24px rgba(2, 132, 199, 0.10);
+}
+
+.a11y-btn svg { width: 22px; height: 22px; }
+
+.ui-collapse-btn svg { transition: transform 160ms ease; }
+body.ui-collapsed .ui-collapse-btn svg { transform: rotate(180deg); }
+
+/* Подсветка активного состояния (когда UI свернуто). */
+.ui-collapse-btn.is-active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.header.is-hero .a11y-btn {
+  background: rgba(15, 23, 42, 0.18);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.92);
+  box-shadow: none;
+}
+
+.header.is-hero .ui-collapse-btn.is-active {
+  background: rgba(14, 165, 233, 0.85);
+  border-color: rgba(14, 165, 233, 0.95);
+  color: white;
+}
+
+.a11y-panel {
+  display: none;
+  padding: 12px 0 18px;
+}
+
+.a11y-panel-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 12px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.a11y-group {
+  display: grid;
+  gap: 6px;
+}
+
+.a11y-label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.a11y-controls {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.a11y-chip {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 10px 12px;
+  background: var(--surface-soft);
+  color: var(--text);
+  font-weight: 800;
+}
+
+.a11y-chip.is-active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.a11y-chip.danger.is-active,
+.a11y-chip.danger {
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+body.a11y-enabled:not(.a11y-collapsed) .a11y-panel { display: block; }
+
+/* Сворачивание верхнего UI: оставляем только логотип и кнопку-глаз. */
+body.ui-collapsed .nav button:not(#a11yToggle):not(#uiCollapseToggle) { display: none; }
+body.ui-collapsed .brand-text { display: none; }
+body.ui-collapsed .header-inner { min-height: 56px; gap: 14px; }
+body.ui-collapsed .menu-btn { display: none; }
+
+/* Размер шрифта (упрощённо). */
+body.a11y-font-md { font-size: 16px; }
+body.a11y-font-lg { font-size: 18px; }
+body.a11y-font-xl { font-size: 22px; }
+
+/* Масштабирование текста для режима слабовидящих: используем множитель и убираем inline-font-size из шаблонов. */
+body { --a11y-scale: 1; }
+body.a11y-font-md { --a11y-scale: 1; }
+body.a11y-font-lg { --a11y-scale: 1.15; }
+body.a11y-font-xl { --a11y-scale: 1.30; }
+
+.route-title { font-size: calc(22px * var(--a11y-scale)); }
+.object-name { font-size: calc(20px * var(--a11y-scale)); }
+.booking-item-name { font-size: calc(20px * var(--a11y-scale)); }
+
+/* Крупные заголовки/ключевые элементы тоже масштабируем. */
+.booking-list-title { font-size: calc(26px * var(--a11y-scale)); }
+.weather-card .temp { font-size: calc(46px * var(--a11y-scale)); }
+.stats-number { font-size: calc(28px * var(--a11y-scale)); }
+.section-text { font-size: calc(17px * var(--a11y-scale)); }
+.hero-text { font-size: calc(18px * var(--a11y-scale)); }
+
+/* Ч/Б режим.
+   Важно: filter на BODY ломает position:fixed (шапка перестаёт вести себя корректно).
+   Поэтому фильтр применяем к блокам, а не к body-родителю. */
+body.a11y-bw header,
+body.a11y-bw main,
+body.a11y-bw footer {
+  filter: grayscale(1);
+}
+
+/* Тёмная тема через переменные. */
+body.theme-dark {
+  --bg: #0b1220;
+  --surface: #0f172a;
+  --surface-soft: #111c33;
+  --border: rgba(148, 163, 184, 0.22);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(226, 232, 240, 0.72);
+}
+
+body.theme-dark .badge {
+  background: rgba(15, 23, 42, 0.55);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.88);
+}
+
+body.theme-dark .season-toggle,
+body.theme-dark .map-season-toggle,
+body.theme-dark .a11y-panel-inner {
+  background: rgba(15, 23, 42, 0.78);
+}
+
+/* В тёмной теме делаем затемнение hero более логичным: переход к чёрному, а не к белому. */
+body.theme-dark .hero::before,
+body.theme-dark .hero.summer::before,
+body.theme-dark .hero.winter::before {
+  background: linear-gradient(
+    90deg,
+    rgba(15, 23, 42, 0) 0%,
+    rgba(15, 23, 42, 0.30) 28%,
+    rgba(0, 0, 0, 0.62) 58%,
+    rgba(0, 0, 0, 0.86) 78%,
+    rgba(0, 0, 0, 0.92) 100%
+  );
+}
+
+/* Доп. точечные фиксы тёмной темы (чтобы не оставались "белые пятна"). */
+body.theme-dark .header { background: rgba(11, 18, 32, 0.86); }
+body.theme-dark .footer { background: linear-gradient(180deg, #0b1220 0%, #050914 100%); }
+
+/* В тёмной теме подзаголовок бренда НЕ должен менять цвет при скролле. */
+body.theme-dark .brand-subtitle,
+body.theme-dark .header.is-hero .brand-subtitle {
+  color: var(--muted);
+}
+
+/* В тёмной теме названия услуг/объектов в блоке "Планируйте поездку" должны быть светлыми. */
+.booking-option { color: var(--text); }
+.booking-item-name { color: var(--text); }
+
+body.theme-dark .secondary-btn,
+body.theme-dark .outline-btn,
+body.theme-dark .small-btn {
+  background: rgba(15, 23, 42, 0.7);
+  color: var(--text);
+}
+
+body.theme-dark .route-card { background: rgba(15, 23, 42, 0.35); }
+body.theme-dark .route-cover::after { background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent); }
 
 .nav button:hover,
 .mobile-nav button:hover,
@@ -171,7 +368,7 @@ img { display: block; max-width: 100%; }
   height: 44px;
   border-radius: 12px;
   border: 1px solid var(--border);
-  background: white;
+  background: var(--surface);
   font-size: 22px;
 }
 
@@ -189,7 +386,7 @@ section { padding: 96px 0; }
 
 .section-title {
   margin: 0;
-  font-size: clamp(34px, 4vw, 48px);
+  font-size: clamp(calc(34px * var(--a11y-scale)), calc(4vw * var(--a11y-scale)), calc(48px * var(--a11y-scale)));
   line-height: 1.08;
 }
 
@@ -202,7 +399,7 @@ section { padding: 96px 0; }
 
 .section-center { text-align: center; }
 .section-text-center { margin-left: auto; margin-right: auto; }
-.section-white { background: white; }
+.section-white { background: var(--surface); }
 .top-space { margin-top: 16px; }
 .top-small { margin-top: 10px; }
 .top-medium { margin-top: 16px; }
@@ -215,9 +412,9 @@ section { padding: 96px 0; }
   gap: 8px;
   padding: 8px 14px;
   border-radius: 999px;
-  border: 1px solid #cfe5f3;
-  background: white;
-  color: #0369a1;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--primary-dark);
   font-size: 14px;
   font-weight: 700;
   box-shadow: 0 8px 20px rgba(2, 132, 199, 0.06);
@@ -391,7 +588,7 @@ section { padding: 96px 0; }
 .secondary-btn,
 .outline-btn,
 .small-btn {
-  background: white;
+  background: var(--surface);
   border: 1px solid var(--border);
   color: var(--text);
 }
@@ -426,7 +623,7 @@ section { padding: 96px 0; }
 
 .hero-title {
   margin: 22px 0 0;
-  font-size: clamp(38px, 5.4vw, 68px);
+  font-size: clamp(calc(38px * var(--a11y-scale)), calc(5.4vw * var(--a11y-scale)), calc(68px * var(--a11y-scale)));
   line-height: 1.04;
   letter-spacing: -0.03em;
   max-width: 640px;
@@ -463,7 +660,7 @@ section { padding: 96px 0; }
   padding: 6px;
   border: 1px solid var(--border);
   border-radius: 999px;
-  background: white;
+  background: var(--surface);
   box-shadow: var(--shadow);
 }
 
@@ -555,7 +752,7 @@ section { padding: 96px 0; }
 
 .route-card {
   overflow: hidden;
-  background: #f8fbff;
+  background: var(--surface-soft);
 }
 
 .route-cover {
@@ -638,7 +835,7 @@ section { padding: 96px 0; }
   gap: 8px;
   padding: 8px 12px;
   border-radius: 999px;
-  background: white;
+  background: var(--surface);
   border: 1px solid var(--border);
   font-size: 13px;
   font-weight: 700;
@@ -646,7 +843,7 @@ section { padding: 96px 0; }
 }
 
 .map-section {
-  background: #f1f9fe;
+  background: var(--surface-soft);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
@@ -685,7 +882,7 @@ section { padding: 96px 0; }
   width: 100%;
   border: 1px solid var(--border);
   border-radius: 16px;
-  background: #f8fbff;
+  background: var(--surface-soft);
   padding: 14px;
   text-align: left;
   display: flex;
@@ -783,7 +980,7 @@ section { padding: 96px 0; }
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 14px 18px;
-  background: white;
+  background: var(--surface);
   font-weight: 700;
   color: var(--text);
 }
@@ -826,7 +1023,7 @@ section { padding: 96px 0; }
 
 .option-price {
   font-weight: 700;
-  color: #0369a1;
+  color: var(--primary-dark);
 }
 
 .feature-list {
@@ -841,7 +1038,7 @@ section { padding: 96px 0; }
   align-items: center;
   padding: 7px 12px;
   border-radius: 999px;
-  background: #f1f5f9;
+  background: var(--surface-soft);
   color: var(--muted);
   font-size: 12px;
   font-weight: 700;
@@ -849,7 +1046,7 @@ section { padding: 96px 0; }
 
 .selected-line {
   margin-top: 12px;
-  color: #0369a1;
+  color: var(--primary-dark);
   font-size: 14px;
   font-weight: 700;
 }
@@ -872,7 +1069,24 @@ section { padding: 96px 0; }
 label {
   font-size: 14px;
   font-weight: 700;
-  color: #334155;
+  color: var(--text);
+}
+
+/* Тёмная тема: активные состояния и выделения без "кислотного" светло-голубого фона. */
+body.theme-dark .booking-option.active {
+  border-color: rgba(56, 189, 248, 0.45);
+  background: rgba(56, 189, 248, 0.12);
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.18);
+}
+
+body.theme-dark .service-box {
+  background: rgba(56, 189, 248, 0.10);
+}
+
+body.theme-dark input,
+body.theme-dark select,
+body.theme-dark textarea {
+  background: rgba(15, 23, 42, 0.72);
 }
 
 input,
@@ -882,7 +1096,7 @@ textarea {
   padding: 14px 16px;
   border: 1px solid var(--border);
   border-radius: 16px;
-  background: white;
+  background: var(--surface);
   color: var(--text);
   outline: none;
 }
@@ -1043,7 +1257,14 @@ textarea {
 }
 
 @media (max-width: 860px) {
-  .nav { display: none; }
+  /* На мобильных прячем текстовые пункты меню, но оставляем кнопки A11Y и свернуть/развернуть UI. */
+  .nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav button:not(#a11yToggle):not(#uiCollapseToggle) { display: none; }
 
   .menu-btn {
     display: inline-flex;
