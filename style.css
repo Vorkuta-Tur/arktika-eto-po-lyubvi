@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 :root {
-  --bg: #f7fbff;
+  --bg: #eef6ff;
   --surface: #ffffff;
   --surface-soft: #f2f8fc;
   --border: #d9e7f2;
@@ -22,6 +22,7 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+html, body { overflow-x: hidden; }
 
 body {
   margin: 0;
@@ -29,7 +30,13 @@ body {
   --a11y-scale: 1;
   font-size: calc(16px * var(--a11y-scale));
   color: var(--text);
-  background: var(--bg);
+  background:
+    /* Лёгкий "шум"/текстура, чтобы не было ощущения сплошной заливки */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='%230f172a' opacity='0.03'%3E%3Ccircle cx='10' cy='18' r='1'/%3E%3Ccircle cx='40' cy='8' r='1'/%3E%3Ccircle cx='70' cy='24' r='1'/%3E%3Ccircle cx='96' cy='14' r='1'/%3E%3Ccircle cx='18' cy='58' r='1'/%3E%3Ccircle cx='58' cy='64' r='1'/%3E%3Ccircle cx='92' cy='70' r='1'/%3E%3Ccircle cx='30' cy='102' r='1'/%3E%3Ccircle cx='78' cy='98' r='1'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    radial-gradient(1200px 700px at 15% 0%, rgba(14, 165, 233, 0.14), transparent 60%),
+    radial-gradient(900px 600px at 95% 10%, rgba(245, 158, 11, 0.12), transparent 58%),
+    radial-gradient(900px 600px at 60% 100%, rgba(16, 185, 129, 0.10), transparent 55%),
+    var(--bg);
   line-height: 1.55;
 }
 
@@ -305,10 +312,53 @@ body.theme-dark {
   --muted: rgba(226, 232, 240, 0.72);
 }
 
+body.theme-dark {
+  background:
+    radial-gradient(1200px 700px at 20% 0%, rgba(14, 165, 233, 0.18), transparent 58%),
+    radial-gradient(1000px 700px at 90% 20%, rgba(99, 102, 241, 0.16), transparent 60%),
+    radial-gradient(900px 650px at 50% 100%, rgba(16, 185, 129, 0.12), transparent 55%),
+    var(--bg);
+}
+
 body.theme-dark .badge {
   background: rgba(15, 23, 42, 0.55);
   border-color: rgba(255, 255, 255, 0.18);
   color: rgba(255, 255, 255, 0.88);
+}
+
+/* ===== Тёмная тема: секционные фоны ===== */
+body.theme-dark .section-white::before {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Cg fill='none' stroke='%2338bdf8' stroke-width='0.6' opacity='0.06'%3E%3Cellipse cx='200' cy='200' rx='40' ry='30'/%3E%3Cellipse cx='200' cy='200' rx='70' ry='55'/%3E%3Cellipse cx='200' cy='200' rx='100' ry='80'/%3E%3Cellipse cx='200' cy='200' rx='130' ry='110'/%3E%3Cellipse cx='200' cy='200' rx='165' ry='140'/%3E%3Cellipse cx='200' cy='200' rx='200' ry='175'/%3E%3Cellipse cx='120' cy='130' rx='30' ry='20'/%3E%3Cellipse cx='120' cy='130' rx='55' ry='40'/%3E%3Cellipse cx='300' cy='300' rx='25' ry='35'/%3E%3Cellipse cx='300' cy='300' rx='50' ry='65'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    radial-gradient(ellipse 900px 500px at 12% 10%, rgba(56, 189, 248, 0.08), transparent 60%),
+    radial-gradient(ellipse 700px 600px at 88% 85%, rgba(99, 102, 241, 0.06), transparent 55%);
+  background-color: rgba(15, 23, 42, 0.4);
+}
+
+body.theme-dark .section-soft::before {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%2310b981' stroke-width='0.7' opacity='0.05'%3E%3Cpath d='M60 10L80 30L60 50L40 30Z'/%3E%3Cpath d='M60 70L80 90L60 110L40 90Z'/%3E%3Cpath d='M0 40L20 60L0 80'/%3E%3Cpath d='M120 40L100 60L120 80'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    radial-gradient(ellipse 900px 500px at 8% 15%, rgba(16, 185, 129, 0.06), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 92% 80%, rgba(56, 189, 248, 0.05), transparent 55%);
+  background-color: rgba(15, 23, 42, 0.35);
+}
+
+body.theme-dark .section-practice::before {
+  background:
+    radial-gradient(ellipse 600px 200px at 20% 5%, rgba(16, 185, 129, 0.08), transparent 70%),
+    radial-gradient(ellipse 500px 180px at 55% 8%, rgba(99, 102, 241, 0.06), transparent 65%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'%3E%3Cpath fill='%2338bdf8' fill-opacity='0.03' d='M0,320 L0,240 Q60,200 120,220 Q200,180 280,200 Q360,140 440,170 Q520,120 600,150 Q680,100 760,130 Q840,80 920,110 Q1000,70 1080,100 Q1160,60 1240,90 Q1320,50 1440,80 L1440,320Z'/%3E%3C/svg%3E") no-repeat bottom / 100% 320px,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%2338bdf8'%3E%3Ccircle cx='15' cy='25' r='0.8' opacity='0.1'/%3E%3Ccircle cx='75' cy='15' r='0.6' opacity='0.08'/%3E%3Ccircle cx='45' cy='55' r='0.7' opacity='0.06'/%3E%3C/g%3E%3C/svg%3E") repeat;
+  background-color: rgba(15, 23, 42, 0.35);
+}
+
+body.theme-dark .section-booking::before {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 600' preserveAspectRatio='none'%3E%3Cpath d='M-20,500 Q200,450 350,350 Q500,250 650,280 Q800,310 950,200 Q1100,90 1250,120 Q1400,150 1460,80' fill='none' stroke='%2338bdf8' stroke-width='2' stroke-dasharray='8 6' opacity='0.06'/%3E%3C/svg%3E") no-repeat center / 100% 100%,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Cg opacity='0.04'%3E%3Ccircle cx='50' cy='50' r='4' fill='none' stroke='%2338bdf8' stroke-width='1'/%3E%3Ccircle cx='50' cy='50' r='1.5' fill='%2338bdf8'/%3E%3Ccircle cx='250' cy='100' r='4' fill='none' stroke='%2310b981' stroke-width='1'/%3E%3Ccircle cx='250' cy='100' r='1.5' fill='%2310b981'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    radial-gradient(ellipse 800px 500px at 10% 30%, rgba(56, 189, 248, 0.06), transparent 60%),
+    radial-gradient(ellipse 700px 400px at 85% 70%, rgba(99, 102, 241, 0.04), transparent 55%);
+  background-color: rgba(15, 23, 42, 0.35);
 }
 
 body.theme-dark .season-toggle,
@@ -317,7 +367,7 @@ body.theme-dark .a11y-panel-inner {
   background: rgba(15, 23, 42, 0.78);
 }
 
-/* В тёмной теме делаем затемнение hero более логичным: переход к чёрному, а не к белому. */
+/* В тёмной теме делаем затемнение hero более логичным: переход к чёрному. */
 body.theme-dark .hero::before,
 body.theme-dark .hero.summer::before,
 body.theme-dark .hero.winter::before {
@@ -405,7 +455,93 @@ section { padding: 96px 0; }
 
 .section-center { text-align: center; }
 .section-text-center { margin-left: auto; margin-right: auto; }
-.section-white { background: var(--surface); }
+
+/* Секции: уходим от "плоской заливки" — делаем дизайнерский фон через градиенты/световые пятна. */
+.section-white,
+.section-soft,
+.section-practice,
+.section-booking {
+  position: relative;
+  background: transparent;
+}
+
+/* Секция «Маршруты» — Топографические контуры */
+.section-white::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Cg fill='none' stroke='%230ea5e9' stroke-width='0.9' opacity='0.18'%3E%3Cellipse cx='200' cy='200' rx='40' ry='30'/%3E%3Cellipse cx='200' cy='200' rx='70' ry='55'/%3E%3Cellipse cx='200' cy='200' rx='100' ry='80'/%3E%3Cellipse cx='200' cy='200' rx='130' ry='110'/%3E%3Cellipse cx='200' cy='200' rx='165' ry='140'/%3E%3Cellipse cx='200' cy='200' rx='200' ry='175'/%3E%3Cellipse cx='120' cy='130' rx='30' ry='20'/%3E%3Cellipse cx='120' cy='130' rx='55' ry='40'/%3E%3Cellipse cx='120' cy='130' rx='80' ry='60'/%3E%3Cellipse cx='300' cy='300' rx='25' ry='35'/%3E%3Cellipse cx='300' cy='300' rx='50' ry='65'/%3E%3Cellipse cx='300' cy='300' rx='75' ry='95'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    radial-gradient(ellipse 900px 500px at 12% 10%, rgba(14, 165, 233, 0.14), transparent 60%),
+    radial-gradient(ellipse 700px 600px at 88% 85%, rgba(245, 158, 11, 0.10), transparent 55%),
+    radial-gradient(ellipse 500px 400px at 50% 50%, rgba(16, 185, 129, 0.10), transparent 60%);
+  background-color: rgba(214, 238, 255, 0.96);
+  background-blend-mode: multiply, normal, normal, normal;
+}
+
+/* Секция «Объекты» — Северный геометрический орнамент */
+.section-soft::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%2310b981' stroke-width='0.9' opacity='0.14'%3E%3Cpath d='M60 10L80 30L60 50L40 30Z'/%3E%3Cpath d='M60 70L80 90L60 110L40 90Z'/%3E%3Cpath d='M0 40L20 60L0 80'/%3E%3Cpath d='M120 40L100 60L120 80'/%3E%3Cpath d='M10 0L30 20M90 0L110 20M10 120L30 100M90 120L110 100'/%3E%3Cpath d='M50 30h20M50 90h20' stroke-dasharray='2 3'/%3E%3Ccircle cx='60' cy='60' r='3' fill='%2310b981' opacity='0.12'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='%230ea5e9' opacity='0.10'%3E%3Ccircle cx='30' cy='30' r='1.5'/%3E%3Ccircle cx='0' cy='0' r='1'/%3E%3Ccircle cx='60' cy='60' r='1'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    radial-gradient(ellipse 900px 500px at 8% 15%, rgba(16, 185, 129, 0.14), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 92% 80%, rgba(59, 130, 246, 0.12), transparent 55%),
+    linear-gradient(180deg, rgba(214, 238, 255, 0.70) 0%, rgba(214, 238, 255, 0.42) 100%);
+  background-blend-mode: multiply, multiply, normal, normal, normal;
+}
+
+.section-white .container,
+.section-soft .container,
+.section-practice .container,
+.section-booking .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* === Секция "Практическая информация" — Горный хребет + Северное сияние === */
+.section-practice {
+  overflow: hidden;
+}
+
+.section-practice::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 600px 200px at 20% 5%, rgba(16, 185, 129, 0.12), transparent 70%),
+    radial-gradient(ellipse 500px 180px at 55% 8%, rgba(99, 102, 241, 0.08), transparent 65%),
+    radial-gradient(ellipse 400px 150px at 80% 12%, rgba(14, 165, 233, 0.10), transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'%3E%3Cpath fill='%230f172a' fill-opacity='0.03' d='M0,320 L0,240 Q60,200 120,220 Q200,180 280,200 Q360,140 440,170 Q520,120 600,150 Q680,100 760,130 Q840,80 920,110 Q1000,70 1080,100 Q1160,60 1240,90 Q1320,50 1440,80 L1440,320Z'/%3E%3Cpath fill='%230f172a' fill-opacity='0.02' d='M0,320 L0,260 Q80,230 160,250 Q240,210 320,235 Q400,190 480,215 Q560,170 640,195 Q720,150 800,180 Q880,140 960,165 Q1040,120 1120,150 Q1200,110 1280,140 Q1360,100 1440,120 L1440,320Z'/%3E%3C/svg%3E") no-repeat bottom / 100% 320px,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%2364748b'%3E%3Ccircle cx='15' cy='25' r='0.8' opacity='0.12'/%3E%3Ccircle cx='75' cy='15' r='0.6' opacity='0.10'/%3E%3Ccircle cx='45' cy='55' r='0.7' opacity='0.08'/%3E%3Ccircle cx='85' cy='70' r='0.5' opacity='0.10'/%3E%3Ccircle cx='30' cy='80' r='0.6' opacity='0.07'/%3E%3C/g%3E%3C/svg%3E") repeat;
+  background-color: rgba(214, 238, 255, 0.92);
+  background-blend-mode: normal, normal, normal, multiply, multiply;
+}
+
+/* === Секция "Планируйте поездку" — Тропа + Компасные метки === */
+.section-booking {
+  overflow: hidden;
+}
+
+.section-booking::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 600' preserveAspectRatio='none'%3E%3Cpath d='M-20,500 Q200,450 350,350 Q500,250 650,280 Q800,310 950,200 Q1100,90 1250,120 Q1400,150 1460,80' fill='none' stroke='%230ea5e9' stroke-width='2.2' stroke-dasharray='8 6' opacity='0.16'/%3E%3Cpath d='M-20,550 Q200,500 350,400 Q500,300 650,330 Q800,360 950,250 Q1100,140 1250,170 Q1400,200 1460,130' fill='none' stroke='%2310b981' stroke-width='1.8' stroke-dasharray='4 8' opacity='0.12'/%3E%3C/svg%3E") no-repeat center / 100% 100%,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Cg opacity='0.12'%3E%3Ccircle cx='50' cy='50' r='4' fill='none' stroke='%230ea5e9' stroke-width='1'/%3E%3Ccircle cx='50' cy='50' r='1.5' fill='%230ea5e9'/%3E%3Ccircle cx='250' cy='100' r='4' fill='none' stroke='%2310b981' stroke-width='1'/%3E%3Ccircle cx='250' cy='100' r='1.5' fill='%2310b981'/%3E%3Ccircle cx='150' cy='200' r='4' fill='none' stroke='%23f59e0b' stroke-width='1'/%3E%3Ccircle cx='150' cy='200' r='1.5' fill='%23f59e0b'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='%230ea5e9' stroke-width='0.4' opacity='0.06' transform='translate(80,80)'%3E%3Ccircle r='60'/%3E%3Ccircle r='40'/%3E%3Cpath d='M0-65L4-50H-4Z' fill='%230ea5e9' opacity='0.12'/%3E%3Cpath d='M0 65L4 50H-4Z'/%3E%3Cpath d='M-65 0L-50 4V-4Z'/%3E%3Cpath d='M65 0L50 4V-4Z'/%3E%3Cpath d='M0-60V60M-60 0H60'/%3E%3C/g%3E%3C/svg%3E") no-repeat 90% 20% / 160px 160px,
+    radial-gradient(ellipse 800px 500px at 10% 30%, rgba(14, 165, 233, 0.12), transparent 60%),
+    radial-gradient(ellipse 700px 400px at 85% 70%, rgba(245, 158, 11, 0.10), transparent 55%),
+    linear-gradient(180deg, rgba(214, 238, 255, 0.70) 0%, rgba(214, 238, 255, 0.42) 100%);
+  background-blend-mode: normal, multiply, normal, normal, normal, normal;
+}
 .top-space { margin-top: 16px; }
 .top-small { margin-top: 10px; }
 .top-medium { margin-top: 16px; }
@@ -448,7 +584,8 @@ section { padding: 96px 0; }
   align-items: center;
   position: relative;
   overflow: hidden;
-  background: url('img/hero-reindeer.webp') left center / cover no-repeat;
+  background: url('img/hero-reindeer.webp') center / cover no-repeat;
+  color: var(--text);
 }
 
 .hero::before {
@@ -457,6 +594,7 @@ section { padding: 96px 0; }
   inset: 0;
   pointer-events: none;
   transition: none !important;
+  /* Переход изображения в светлую подложку (как ты просил) */
   background: linear-gradient(
     90deg,
     rgba(15, 23, 42, 0) 0%,
@@ -514,11 +652,31 @@ section { padding: 96px 0; }
   transform: translateX(70px);
 }
 
+.hero-copy {
+  width: 100%;
+  padding: 18px 18px;
+  border-radius: 22px;
+  background: rgba(15, 23, 42, 0.48);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+}
+
 .hero-topbar {
   display: flex;
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
+  min-height: 52px;
+}
+
+.hero-topbar .badge {
+  background: rgba(15, 23, 42, 0.32);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 320px;
 }
 
 .season-toggle {
@@ -529,6 +687,7 @@ section { padding: 96px 0; }
 .season-btn {
   flex: 1 0 0;
   text-align: center;
+  min-width: 0;
 }
 
 .routes-grid {
@@ -634,6 +793,8 @@ section { padding: 96px 0; }
   letter-spacing: -0.03em;
   max-width: 640px;
   overflow-wrap: anywhere;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
 }
 
 .hero-title span.summer { color: var(--summer); }
@@ -642,11 +803,11 @@ section { padding: 96px 0; }
 .hero-text {
   margin: 22px 0 0;
   max-width: 620px;
-  /* Make the text under “Discover Vorkuta” black as requested. */
-  color: var(--text);
+  color: rgba(255, 255, 255, 0.92);
   font-size: calc(18px * var(--a11y-scale));
   line-height: 1.7;
   overflow-wrap: anywhere;
+  text-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
 }
 
 .hero-actions,
@@ -886,9 +1047,38 @@ section { padding: 96px 0; }
 }
 
 .map-section {
-  background: var(--surface-soft);
+  position: relative;
+  background: transparent;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+}
+
+.map-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%233b82f6' stroke-width='0.4' opacity='0.12'%3E%3Cpath d='M0 0h80v80H0z'/%3E%3Cpath d='M40 0v80M0 40h80'/%3E%3Ccircle cx='40' cy='40' r='2' fill='%233b82f6' opacity='0.3'/%3E%3Ccircle cx='0' cy='0' r='1.5' fill='%233b82f6' opacity='0.2'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%230ea5e9' stroke-width='0.5' opacity='0.06' transform='translate(100,100)'%3E%3Ccircle r='80'/%3E%3Ccircle r='60'/%3E%3Ccircle r='40'/%3E%3Cpath d='M0-90L5-70H-5Z' fill='%230ea5e9' opacity='0.15'/%3E%3Cpath d='M0 90L5 70H-5Z'/%3E%3Cpath d='M-90 0L-70 5V-5Z'/%3E%3Cpath d='M90 0L70 5V-5Z'/%3E%3Cpath d='M0-80V80M-80 0H80'/%3E%3Cpath d='M-57-57L57 57M-57 57L57-57' stroke-dasharray='4 4'/%3E%3C/g%3E%3C/svg%3E") no-repeat 85% 50% / 200px 200px,
+    radial-gradient(ellipse 1000px 600px at 15% 20%, rgba(59, 130, 246, 0.06), transparent 60%),
+    radial-gradient(ellipse 800px 500px at 85% 70%, rgba(14, 165, 233, 0.05), transparent 55%);
+  background-color: rgba(226, 242, 255, 0.86);
+  background-blend-mode: multiply, normal, normal, normal;
+}
+
+.map-section .container {
+  position: relative;
+  z-index: 1;
+}
+
+body.theme-dark .map-section::before {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%2338bdf8' stroke-width='0.4' opacity='0.08'%3E%3Cpath d='M0 0h80v80H0z'/%3E%3Cpath d='M40 0v80M0 40h80'/%3E%3Ccircle cx='40' cy='40' r='2' fill='%2338bdf8' opacity='0.2'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%2338bdf8' stroke-width='0.5' opacity='0.04' transform='translate(100,100)'%3E%3Ccircle r='80'/%3E%3Ccircle r='60'/%3E%3Cpath d='M0-90L5-70H-5Z' fill='%2338bdf8' opacity='0.1'/%3E%3Cpath d='M0-80V80M-80 0H80'/%3E%3C/g%3E%3C/svg%3E") no-repeat 85% 50% / 200px 200px,
+    radial-gradient(ellipse 1000px 600px at 15% 20%, rgba(56, 189, 248, 0.08), transparent 60%),
+    radial-gradient(ellipse 800px 500px at 85% 70%, rgba(99, 102, 241, 0.06), transparent 55%);
+  background-color: rgba(15, 23, 42, 0.35);
 }
 
 .map-topbar {
@@ -1295,7 +1485,7 @@ textarea {
   }
 
   .season-toggle {
-    width: 210px;
+    width: min(100%, 360px);
   }
 }
 
@@ -1315,6 +1505,18 @@ textarea {
     justify-content: center;
   }
 
+  /* На узких экранах освобождаем место в шапке. */
+  .brand-subtitle { display: none; }
+  .header-inner { gap: 14px; }
+
+  /* В мобилке сохраняем стабильную геометрию карточки погоды (не должна "прыгать" на «Сейчас»). */
+  .weather-card { min-height: 340px; }
+  .weather-card > p { max-height: 52px; -webkit-line-clamp: 2; }
+
+  .hero-topbar .badge { max-width: 100%; }
+  .season-toggle { width: min(100%, 360px); }
+  .season-btn { padding: 10px 12px; }
+
   .hero { padding-top: 108px; }
 
   .hero-info-grid,
@@ -1327,6 +1529,51 @@ textarea {
   .hero-title,
   .hero-text {
     max-width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  /* Ещё более компактная шапка для телефонов. */
+  .header-inner { min-height: 64px; gap: 10px; }
+
+  .brand-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+  }
+
+  .brand-title { font-size: calc(16px * var(--a11y-scale)); }
+  .brand-text { line-height: 1.05; }
+
+  .a11y-btn { width: 40px; height: 40px; }
+  .a11y-btn svg { width: 20px; height: 20px; }
+
+  .menu-btn { width: 40px; height: 40px; }
+
+  /* Если всё равно не помещается — скрываем текст бренда (оставляем только иконку). */
+  .brand-text { display: none; }
+
+  .hero { padding-top: 96px; }
+
+  .ui-float-toggle { top: 10px; right: 10px; }
+
+  /* На телефоне убираем "переход" в белый/чёрный — оставляем ровную подложку поверх фото. */
+  .hero::before,
+  .hero.summer::before,
+  .hero.winter::before {
+    background: rgba(0, 0, 0, 0.45);
+  }
+
+  /* Уменьшаем внутренние отступы карточек, чтобы контент не выглядел "зажатым". */
+  .hero-panel,
+  .info-card,
+  .booking-form,
+  .sidebar-card,
+  .object-card,
+  .practice-card,
+  .weather-card,
+  .summary-card {
+    padding: 18px;
   }
 }
 

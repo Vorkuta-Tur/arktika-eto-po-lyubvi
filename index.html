@@ -148,17 +148,20 @@
             <div class="badge" id="heroBadge">Летний сезон по Воркуте</div>
           </div>
 
-          <h1 class="hero-title">
-            Откройте для себя <span class="summer" id="heroAccent">Воркуту</span>
-          </h1>
+          <div class="hero-copy">
+            <h1 class="hero-title">
+              Откройте для себя <span class="summer" id="heroAccent">Воркуту</span>
+            </h1>
 
-          <p class="hero-text" id="heroText">
-            Летние маршруты делают акцент на открытых площадках, культурных объектах и протяжённых прогулках по городу.
-          </p>
+            <p class="hero-text" id="heroText">
+              Летние маршруты делают акцент на открытых площадках, культурных объектах и протяжённых прогулках по городу.
+            </p>
+          </div>
 
           <div class="hero-actions">
-            <button class="primary-btn" type="button" data-scroll="routes">Смотреть маршруты</button>
-            <button class="secondary-btn" type="button" data-scroll="map">Открыть карту</button>
+            <button class="primary-btn" type="button" data-scroll="booking" data-booking-type="self">Самостоятельное путешествие</button>
+            <button class="secondary-btn" type="button" data-scroll="booking" data-booking-type="guide">С экскурсоводом</button>
+            <button class="outline-btn" type="button" data-scroll="booking" data-booking-type="audio">Аудиогид</button>
           </div>
 
           <div class="weather-card">
@@ -300,7 +303,7 @@
       </div>
     </section>
 
-    <section id="objects" class="section-white">
+    <section id="objects" class="section-soft">
       <div class="container">
         <span class="badge">Объекты</span>
         <h2 class="section-title top-space">Каталог 11 достопримечательностей</h2>
@@ -311,7 +314,7 @@
       </div>
     </section>
 
-    <section id="practical">
+    <section id="practical" class="section-practice">
       <div class="container">
         <span class="badge">Практическая информация</span>
         <h2 class="section-title top-space">Экипировка, безопасность и экстренные контакты</h2>
@@ -335,12 +338,12 @@
       </div>
     </section>
 
-    <section id="booking">
+    <section id="booking" class="section-booking">
       <div class="container section-center">
-        <span class="badge">Планируйте поездку</span>
-        <h2 class="section-title top-space">Бронирование услуг</h2>
+        <span class="badge">Сообщество гидов</span>
+        <h2 class="section-title top-space">Выберите формат маршрута</h2>
         <p class="section-text section-text-center">
-          Подберите отель, трансфер или ресторан рядом с интересующим маршрутом.
+          Этот проект делает сообщество гидов-экскурсоводов. Вы можете пройти маршрут самостоятельно, с экскурсоводом или использовать аудиогид — оставьте заявку ниже.
         </p>
 
         <div class="booking-tabs" id="bookingTabs"></div>

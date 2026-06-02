@@ -208,31 +208,47 @@ const practiceInfo = {
 };
 
 const bookingOptions = {
-  hotel: {
-    title: 'Отели',
-    icon: '🏨',
+  self: {
+    title: 'Самостоятельно',
+    icon: '🧭',
     items: [
-      { name: 'Гостиница «Воркута»', rating: 4.2, price: 'от 3 500 ₽/ночь', features: ['Wi-Fi', 'Завтрак', 'Парковка'] },
-      { name: 'Гостиница «Северный»', rating: 4.5, price: 'от 4 200 ₽/ночь', features: ['Wi-Fi', 'Ресторан', 'Сауна'] },
-      { name: 'Мини-гостиница «Plaza»', rating: 4.0, price: 'от 2 800 ₽/ночь', features: ['Wi-Fi', 'Кухня', 'Трансфер'] }
+      {
+        name: 'Маршрут самостоятельно',
+        price: 'Бесплатно',
+        features: ['GPX-трек', 'Карта точек', 'Рекомендации по сезону']
+      },
+      {
+        name: 'Самостоятельно + чек-лист',
+        price: 'Бесплатно',
+        features: ['Чек-лист', 'Подсказки по безопасности', 'Что взять с собой']
+      }
     ]
   },
-  taxi: {
-    title: 'Такси',
-    icon: '🚕',
+  guide: {
+    title: 'С гидом',
+    icon: '🧑‍🏫',
     items: [
-      { name: 'Такси «Вояж»', rating: 4.6, price: 'от 150 ₽', features: ['Комфорт', 'Детское кресло', '24/7'] },
-      { name: 'Служба «Север»', rating: 4.3, price: 'от 120 ₽', features: ['Эконом', 'Межгород', 'Безнал'] },
-      { name: 'Премиум трансфер', rating: 4.8, price: 'от 500 ₽', features: ['Бизнес-класс', 'Встреча', 'Гид'] }
+      {
+        name: 'Групповая экскурсия',
+        price: 'по запросу',
+        features: ['Сообщество гидов', 'Маршрут по сезону', 'Вопрос–ответ']
+      },
+      {
+        name: 'Индивидуальный гид',
+        price: 'по запросу',
+        features: ['Под ваш темп', 'Фото-остановки', 'Погружение в историю']
+      }
     ]
   },
-  restaurant: {
-    title: 'Рестораны',
-    icon: '🍽️',
+  audio: {
+    title: 'Аудиогид',
+    icon: '🎧',
     items: [
-      { name: 'Ресто-бар «Суши-уши»', rating: 4.4, price: 'средний чек 1 200 ₽', features: ['Северная кухня', 'Банкеты', 'Живая музыка'] },
-      { name: 'Кафе «Roll»', rating: 4.2, price: 'средний чек 600 ₽', features: ['Домашняя еда', 'Бизнес-ланч', 'Доставка'] },
-      { name: 'Кафе «Гелиос»', rating: 4.5, price: 'средний чек 900 ₽', features: ['Коктейли', 'Живая музыка', 'Панорамный вид'] }
+      {
+        name: 'Аудиогид по маршруту',
+        price: 'по запросу',
+        features: ['Озвучка точек', 'Удобно в наушниках', 'Можно без интернета']
+      }
     ]
   }
 };
@@ -260,7 +276,7 @@ const state = {
   season: 'summer',
   weatherMode: 'summer', // 'summer' | 'winter' | 'now'
   selectedRouteId: 'historic-core',
-  activeBookingType: 'hotel',
+  activeBookingType: 'self',
   selectedService: '',
   routeCoverIndex: {}
 };
@@ -994,7 +1010,7 @@ function renderBooking() {
     `)
     .join('');
 
-  bookingListTitle.textContent = `${current.icon} Доступные ${current.title.toLowerCase()}`;
+  bookingListTitle.textContent = `${current.icon} ${current.title}`;
 
   bookingOptionsContainer.innerHTML = current.items
     .map((item) => `
@@ -1002,7 +1018,7 @@ function renderBooking() {
         <div class="option-top">
           <div>
                   <strong class="booking-item-name">${item.name}</strong>
-            <div class="rating">★ ${item.rating}</div>
+            ${typeof item.rating === 'number' ? `<div class="rating">★ ${item.rating}</div>` : ''}
           </div>
           <div class="option-price">${item.price}</div>
         </div>
@@ -1228,6 +1244,8 @@ document.addEventListener('click', (event) => {
   const bookingBtn = target.closest('[data-booking-type]');
   if (bookingBtn) {
     state.activeBookingType = bookingBtn.getAttribute('data-booking-type');
+    // При смене формата сбрасываем выбор конкретного варианта.
+    state.selectedService = '';
     renderBooking();
   }
 
