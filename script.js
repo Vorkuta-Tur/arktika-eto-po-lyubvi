@@ -208,31 +208,164 @@ const practiceInfo = {
 };
 
 const bookingOptions = {
-  hotel: {
-    title: 'Отели',
-    icon: '🏨',
+  self: {
+    title: 'Самостоятельно',
+    icon: '🧭',
+    subtitle: 'Идёте в своём темпе',
+    pricePill: '0 ₽',
+    description:
+      'Получите трек, карту точек и рекомендации по сезону — удобно для прогулки без привязки ко времени.',
+    highlights: ['GPX + карта', 'Сезонные советы', 'Без брони'],
+    heroImage: 'img/ParkPobedy.webp',
+    form: {
+      // Как в первой версии: обычная заявка, без авто-выбора услуги.
+      title: 'Оставить заявку',
+      submit: 'Отправить заявку',
+      showDateGuests: true,
+      requirePhone: true,
+      requireEmail: false
+    },
+    selfCategories: {
+      hotels: {
+        title: 'Отели',
+        icon: '🏨',
+        heading: 'Доступные отели',
+        items: [
+          {
+            name: 'Гостиница «Воркута»',
+            price: 'от 3 500 ₽/ночь',
+            rating: 4.2,
+            features: ['Wi‑Fi', 'Завтрак', 'Парковка']
+          },
+          {
+            name: 'Гостиница «Северный»',
+            price: 'от 4 200 ₽/ночь',
+            rating: 4.5,
+            features: ['Wi‑Fi', 'Ресторан', 'Сауна']
+          },
+          {
+            name: 'Мини-гостиница «Plaza»',
+            price: 'от 2 800 ₽/ночь',
+            rating: 4,
+            features: ['Wi‑Fi', 'Кухня', 'Трансфер']
+          }
+        ]
+      },
+      taxi: {
+        title: 'Такси',
+        icon: '🚕',
+        heading: 'Доступные такси',
+        items: [
+          {
+            name: 'Такси «Вояж»',
+            price: 'от 150 ₽',
+            rating: 4.6,
+            features: ['Комфорт', 'Детское кресло', '24/7']
+          },
+          {
+            name: 'Служба «Север»',
+            price: 'от 120 ₽',
+            rating: 4.3,
+            features: ['Эконом', 'Межгород', 'Безнал']
+          },
+          {
+            name: 'Премиум трансфер',
+            price: 'от 500 ₽',
+            rating: 4.8,
+            features: ['Бизнес-класс', 'Встреча', 'Гид']
+          }
+        ]
+      },
+      restaurants: {
+        title: 'Рестораны',
+        icon: '🍽️',
+        heading: 'Доступные рестораны',
+        items: [
+          {
+            name: 'Ресто-бар «Суши-уши»',
+            price: 'средний чек 1 200 ₽',
+            rating: 4.4,
+            features: ['Северная кухня', 'Банкеты', 'Живая музыка']
+          },
+          {
+            name: 'Кафе «Roll»',
+            price: 'средний чек 600 ₽',
+            rating: 4.2,
+            features: ['Домашняя еда', 'Бизнес-ланч', 'Доставка']
+          },
+          {
+            name: 'Кафе «Гелиос»',
+            price: 'средний чек 900 ₽',
+            rating: 4.5,
+            features: ['Коктейли', 'Живая музыка', 'Панорамный вид']
+          }
+        ]
+      }
+    },
     items: [
-      { name: 'Гостиница «Воркута»', rating: 4.2, price: 'от 3 500 ₽/ночь', features: ['Wi-Fi', 'Завтрак', 'Парковка'] },
-      { name: 'Гостиница «Северный»', rating: 4.5, price: 'от 4 200 ₽/ночь', features: ['Wi-Fi', 'Ресторан', 'Сауна'] },
-      { name: 'Мини-гостиница «Plaza»', rating: 4.0, price: 'от 2 800 ₽/ночь', features: ['Wi-Fi', 'Кухня', 'Трансфер'] }
+      {
+        name: 'Маршрут самостоятельно',
+        price: 'Бесплатно',
+        features: ['GPX-трек', 'Карта точек', 'Рекомендации по сезону']
+      },
+      {
+        name: 'Самостоятельно + чек-лист',
+        price: 'Бесплатно',
+        features: ['Чек-лист', 'Подсказки по безопасности', 'Что взять с собой']
+      }
     ]
   },
-  taxi: {
-    title: 'Такси',
-    icon: '🚕',
+  guide: {
+    title: 'С гидом',
+    icon: '🧑‍🏫',
+    subtitle: 'Экскурсия с человеком',
+    pricePill: 'по запросу',
+    description:
+      'Гид проведёт по маршруту, поможет с историей и логистикой, подстроится под темп группы и погоду.',
+    highlights: ['Живой рассказ', 'Вопрос–ответ', 'Под ваш темп'],
+    heroImage: 'img/Dramteatr.webp',
+    form: {
+      title: 'Заявка на экскурсию с гидом',
+      submit: 'Забронировать',
+      showDateGuests: true,
+      requirePhone: true,
+      requireEmail: false
+    },
     items: [
-      { name: 'Такси «Вояж»', rating: 4.6, price: 'от 150 ₽', features: ['Комфорт', 'Детское кресло', '24/7'] },
-      { name: 'Служба «Север»', rating: 4.3, price: 'от 120 ₽', features: ['Эконом', 'Межгород', 'Безнал'] },
-      { name: 'Премиум трансфер', rating: 4.8, price: 'от 500 ₽', features: ['Бизнес-класс', 'Встреча', 'Гид'] }
+      {
+        name: 'Групповая экскурсия',
+        price: 'по запросу',
+        features: ['Сообщество гидов', 'Маршрут по сезону', 'Вопрос–ответ']
+      },
+      {
+        name: 'Индивидуальный гид',
+        price: 'по запросу',
+        features: ['Под ваш темп', 'Фото-остановки', 'Погружение в историю']
+      }
     ]
   },
-  restaurant: {
-    title: 'Рестораны',
-    icon: '🍽️',
+  audio: {
+    title: 'Аудиогид',
+    icon: '🎧',
+    subtitle: 'В наушниках, как подкаст',
+    pricePill: 'по запросу',
+    description:
+      'Слушаете точки по ходу маршрута — можно без интернета, удобно одному или компанией.',
+    highlights: ['Озвучка точек', 'Можно офлайн', 'Свободный темп'],
+    heroImage: 'img/MuseynoVistovoh.webp',
+    form: {
+      title: 'Получить доступ к аудиогиду',
+      submit: 'Получить доступ',
+      showDateGuests: false,
+      requirePhone: false,
+      requireEmail: true
+    },
     items: [
-      { name: 'Ресто-бар «Суши-уши»', rating: 4.4, price: 'средний чек 1 200 ₽', features: ['Северная кухня', 'Банкеты', 'Живая музыка'] },
-      { name: 'Кафе «Roll»', rating: 4.2, price: 'средний чек 600 ₽', features: ['Домашняя еда', 'Бизнес-ланч', 'Доставка'] },
-      { name: 'Кафе «Гелиос»', rating: 4.5, price: 'средний чек 900 ₽', features: ['Коктейли', 'Живая музыка', 'Панорамный вид'] }
+      {
+        name: 'Аудиогид по маршруту',
+        price: 'по запросу',
+        features: ['Озвучка точек', 'Удобно в наушниках', 'Можно без интернета']
+      }
     ]
   }
 };
@@ -260,7 +393,8 @@ const state = {
   season: 'summer',
   weatherMode: 'summer', // 'summer' | 'winter' | 'now'
   selectedRouteId: 'historic-core',
-  activeBookingType: 'hotel',
+  activeBookingType: 'self',
+  activeSelfCategory: 'hotels',
   selectedService: '',
   routeCoverIndex: {}
 };
@@ -312,12 +446,19 @@ const objectGrid = document.getElementById('objectGrid');
 const gearList = document.getElementById('gearList');
 const safetyList = document.getElementById('safetyList');
 const emergencyList = document.getElementById('emergencyList');
+const bookingSection = document.getElementById('booking');
 const bookingTabs = document.getElementById('bookingTabs');
 const bookingOptionsContainer = document.getElementById('bookingOptions');
 const bookingListTitle = document.getElementById('bookingListTitle');
+const bookingModeHero = document.getElementById('bookingModeHero');
+const bookingModePrice = document.getElementById('bookingModePrice');
+const bookingModeText = document.getElementById('bookingModeText');
+const bookingModeHighlights = document.getElementById('bookingModeHighlights');
 const selectedServiceBox = document.getElementById('selectedServiceBox');
 const selectedServiceText = document.getElementById('selectedServiceText');
 const bookingForm = document.getElementById('bookingForm');
+const bookingFormTitle = document.getElementById('bookingFormTitle');
+const bookingSubmitBtn = document.getElementById('bookingSubmitBtn');
 const successBox = document.getElementById('successBox');
 const weatherTemp = document.getElementById('weatherTemp');
 const weatherText = document.getElementById('weatherText');
@@ -332,6 +473,7 @@ const mapModeBadge = document.getElementById('mapModeBadge');
 const a11yToggle = document.getElementById('a11yToggle');
 const a11yPanel = document.getElementById('a11yPanel');
 const uiCollapseToggle = document.getElementById('uiCollapseToggle');
+const uiCollapseFloating = document.getElementById('uiCollapseFloating');
 
 let yandexMap = null;
 let yandexRouteLine = null;
@@ -386,10 +528,11 @@ function applyA11yState() {
 
   body.classList.toggle('a11y-enabled', !!a11yState.enabled);
   body.classList.toggle('a11y-collapsed', !!a11yState.enabled && !!a11yState.collapsed);
-  body.classList.toggle('ui-collapsed', !!a11yState.enabled && !!a11yState.uiCollapsed);
+  // Сворачивание верхнего UI работает независимо от режима слабовидящих.
+  body.classList.toggle('ui-collapsed', !!a11yState.uiCollapsed);
 
   body.classList.remove('a11y-font-md', 'a11y-font-lg', 'a11y-font-xl');
-  body.classList.add(`a11y-font-${a11yState.font}`);
+  body.classList.add(`a11y-font-${a11yState.enabled ? a11yState.font : 'md'}`);
 
   body.classList.toggle('theme-dark', a11yState.enabled && a11yState.theme === 'dark');
   body.classList.toggle('a11y-bw', a11yState.enabled && a11yState.bw === 'on');
@@ -412,12 +555,15 @@ function applyA11yState() {
   }
 
   // Синхронизация кнопки "свернуть/развернуть" в самой шапке.
-  if (uiCollapseToggle) {
-    const label = a11yState.uiCollapsed ? 'Развернуть верхнее UI' : 'Свернуть верхнее UI';
-    uiCollapseToggle.classList.toggle('is-active', !!a11yState.uiCollapsed);
-    uiCollapseToggle.setAttribute('aria-label', label);
-    uiCollapseToggle.setAttribute('title', label);
-  }
+  const label = a11yState.uiCollapsed ? 'Развернуть верхнее UI' : 'Свернуть верхнее UI';
+  [uiCollapseToggle, uiCollapseFloating].filter(Boolean).forEach((btn) => {
+    btn.classList.toggle('is-active', !!a11yState.uiCollapsed);
+    btn.setAttribute('aria-label', label);
+    btn.setAttribute('title', label);
+  });
+
+  // После смены масштаба/режима пересчитываем, где действительно нужен "разворот" текста.
+  updateWeatherExpandToggles();
 }
 
 function resetA11y() {
@@ -436,6 +582,43 @@ function syncHeaderStyle() {
   const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
   const isHero = window.scrollY + 80 < heroBottom;
   siteHeader.classList.toggle('is-hero', isHero);
+}
+
+function updateWeatherExpandToggles() {
+  // Показываем кнопку-галочку только если значение реально обрезается до "..."
+  document.querySelectorAll('.weather-detail').forEach((card) => {
+    const p = card.querySelector('p');
+    const btn = card.querySelector('[data-weather-expand]');
+    if (!p || !btn) return;
+
+    const wasExpanded = card.classList.contains('is-expanded');
+    if (wasExpanded) card.classList.remove('is-expanded');
+
+    // Для nowrap+ellipsis достаточно сравнить ширины.
+    // Доп. защита: иногда на первом рендере clientWidth ещё не посчитан (0),
+    // тогда пробуем снова в следующем кадре.
+    if (p.clientWidth === 0) {
+      requestAnimationFrame(updateWeatherExpandToggles);
+      return;
+    }
+
+    const truncated = p.scrollWidth > p.clientWidth + 1;
+
+    if (wasExpanded) card.classList.add('is-expanded');
+
+    if (truncated) card.dataset.needsToggle = '1';
+    if (!truncated && !wasExpanded) card.dataset.needsToggle = '0';
+
+    const needsToggle = card.dataset.needsToggle === '1';
+    card.classList.toggle('is-truncated', needsToggle);
+
+    // Если не нужно — прячем кнопку совсем.
+    btn.style.display = needsToggle || wasExpanded ? '' : 'none';
+
+    const label = wasExpanded ? 'Свернуть' : 'Развернуть';
+    btn.setAttribute('aria-label', label);
+    btn.setAttribute('title', label);
+  });
 }
 
 function formatC(value) {
@@ -813,6 +996,10 @@ function renderHero() {
   document.querySelectorAll('.season-btn').forEach((btn) => {
     btn.classList.toggle('active', btn.dataset.season === state.weatherMode);
   });
+
+  // Важно: в режиме "Сейчас" данные приходят асинхронно, и значения в подкарточках могут
+  // стать длиннее (появятся "..."). Пересчитываем, где реально нужно показывать "галочку".
+  updateWeatherExpandToggles();
 }
 
 function renderRoutes() {
@@ -888,14 +1075,8 @@ function renderMapSection() {
     `)
     .join('');
 
-  legendList.innerHTML = routes
-    .map((route) => `
-      <div class="legend-item">
-        <span class="dot" style="background:${route.pathColor};"></span>
-        <span>${route.title}${route.seasons.includes(state.season) ? '' : ' (неактивен)'}</span>
-      </div>
-    `)
-    .join('');
+  // Подблок "Легенда" удалён по ТЗ.
+  if (legendList) legendList.innerHTML = '';
 
   seasonBoxText.textContent =
     state.season === 'summer'
@@ -955,35 +1136,109 @@ function renderPractical() {
 
 function renderBooking() {
   const current = bookingOptions[state.activeBookingType];
+  const selfCategory =
+    state.activeBookingType === 'self'
+      ? current.selfCategories?.[state.activeSelfCategory] ?? current.selfCategories?.hotels
+      : null;
+
+  // Если пользователь только что переключил формат — сразу показываем "умолчательный" пакет,
+  // чтобы справа (форма) была понятная цель.
+  if (state.activeBookingType !== 'self' && !state.selectedService && current.items && current.items.length > 0) {
+    state.selectedService = current.items[0].name;
+  }
+
+  if (bookingSection) {
+    bookingSection.setAttribute('data-booking-type', state.activeBookingType);
+  }
 
   bookingTabs.innerHTML = Object.entries(bookingOptions)
     .map(([key, value]) => `
       <button class="booking-tab ${state.activeBookingType === key ? 'active' : ''}" type="button" data-booking-type="${key}">
-        <span>${value.icon}</span>
-        <span>${value.title}</span>
+        <span class="booking-tab-icon" aria-hidden="true">${value.icon}</span>
+        <span class="booking-tab-main">
+          <span class="booking-tab-title">${value.title}</span>
+          <span class="booking-tab-sub">${value.subtitle ?? ''}</span>
+        </span>
+        <span class="booking-tab-pill">${value.pricePill ?? ''}</span>
       </button>
     `)
     .join('');
 
-  bookingListTitle.textContent = `${current.icon} Доступные ${current.title.toLowerCase()}`;
+  bookingListTitle.textContent = `${current.icon} ${current.title}`;
+  if (bookingModePrice) bookingModePrice.textContent = current.pricePill ?? '';
+  if (bookingModeText) bookingModeText.textContent = current.description ?? '';
+  if (bookingModeHighlights) {
+    bookingModeHighlights.innerHTML = (current.highlights ?? [])
+      .map((item) => `<span class="booking-highlight">${item}</span>`)
+      .join('');
+  }
+  if (bookingModeHero) {
+    bookingModeHero.setAttribute('data-hero', state.activeBookingType);
+  }
 
-  bookingOptionsContainer.innerHTML = current.items
-    .map((item) => `
-            <button class="booking-option ${state.selectedService === item.name ? 'active' : ''}" type="button" data-service-name="${item.name}">
-        <div class="option-top">
-          <div>
-                  <strong class="booking-item-name">${item.name}</strong>
-            <div class="rating">★ ${item.rating}</div>
+  if (state.activeBookingType === 'self' && selfCategory) {
+    bookingOptionsContainer.innerHTML = `
+      <div class="booking-self-panel">
+        <div class="booking-self-tabs">
+          ${Object.entries(current.selfCategories)
+            .map(([key, category]) => `
+              <button
+                class="booking-self-tab ${state.activeSelfCategory === key ? 'active' : ''}"
+                type="button"
+                data-self-category="${key}"
+              >
+                <span class="booking-self-tab-icon" aria-hidden="true">${category.icon}</span>
+                <span>${category.title}</span>
+              </button>
+            `)
+            .join('')}
+        </div>
+
+        <div class="booking-self-heading">
+          <span class="booking-self-heading-icon" aria-hidden="true">${selfCategory.icon}</span>
+          <span>${selfCategory.heading}</span>
+        </div>
+
+        <div class="booking-self-list">
+          ${selfCategory.items
+            .map((item) => `
+              <button class="booking-option booking-option--self ${state.selectedService === item.name ? 'active' : ''}" type="button" data-service-name="${item.name}">
+                <div class="option-top">
+                  <div>
+                    <strong class="booking-item-name">${item.name}</strong>
+                    ${typeof item.rating === 'number' ? `<div class="rating">★ ${item.rating}</div>` : ''}
+                  </div>
+                  <div class="option-price">${item.price}</div>
+                </div>
+                <div class="feature-list">
+                  ${item.features.map((feature) => `<span class="feature-tag">${feature}</span>`).join('')}
+                </div>
+                ${state.selectedService === item.name ? '<div class="selected-line">Выбрано</div>' : ''}
+              </button>
+            `)
+            .join('')}
+        </div>
+      </div>
+    `;
+  } else {
+    bookingOptionsContainer.innerHTML = current.items
+      .map((item) => `
+              <button class="booking-option ${state.selectedService === item.name ? 'active' : ''}" type="button" data-service-name="${item.name}">
+          <div class="option-top">
+            <div>
+                    <strong class="booking-item-name">${item.name}</strong>
+              ${typeof item.rating === 'number' ? `<div class="rating">★ ${item.rating}</div>` : ''}
+            </div>
+            <div class="option-price">${item.price}</div>
           </div>
-          <div class="option-price">${item.price}</div>
-        </div>
-        <div class="feature-list">
-          ${item.features.map((feature) => `<span class="feature-tag">${feature}</span>`).join('')}
-        </div>
-        ${state.selectedService === item.name ? '<div class="selected-line">Выбрано</div>' : ''}
-      </button>
-    `)
-    .join('');
+          <div class="feature-list">
+            ${item.features.map((feature) => `<span class="feature-tag">${feature}</span>`).join('')}
+          </div>
+          ${state.selectedService === item.name ? '<div class="selected-line">Выбрано</div>' : ''}
+        </button>
+      `)
+      .join('');
+  }
 
   if (state.selectedService) {
     selectedServiceBox.classList.add('visible');
@@ -991,6 +1246,25 @@ function renderBooking() {
   } else {
     selectedServiceBox.classList.remove('visible');
   }
+
+  // --- Форма: меняем под выбранный формат (поле даты/гостей актуально только для экскурсии с гидом) ---
+  const phoneInput = document.getElementById('phone');
+  const emailInput = document.getElementById('email');
+  const dateInput = document.getElementById('date');
+  const dateField = document.querySelector('[data-booking-field="date"]');
+  const guestsField = document.querySelector('[data-booking-field="guests"]');
+
+  const formCfg = current.form ?? {};
+  if (bookingFormTitle && formCfg.title) bookingFormTitle.textContent = formCfg.title;
+  if (bookingSubmitBtn && formCfg.submit) bookingSubmitBtn.textContent = formCfg.submit;
+
+  const showDateGuests = !!formCfg.showDateGuests;
+  if (dateField) dateField.classList.toggle('is-hidden', !showDateGuests);
+  if (guestsField) guestsField.classList.toggle('is-hidden', !showDateGuests);
+  if (dateInput) dateInput.required = showDateGuests;
+
+  if (phoneInput) phoneInput.required = !!formCfg.requirePhone;
+  if (emailInput) emailInput.required = !!formCfg.requireEmail;
 }
 
 function fillGuests() {
@@ -1022,12 +1296,41 @@ function renderAll() {
   renderPractical();
   renderBooking();
   syncHeaderStyle();
+  updateWeatherExpandToggles();
 }
 
 document.addEventListener('click', (event) => {
   const target = event.target;
   // Важно: клики по SVG (глаз) дают SVGElement, это НЕ HTMLElement.
   if (!(target instanceof Element)) return;
+
+  const weatherExpandBtn = target.closest('[data-weather-expand]');
+  if (weatherExpandBtn) {
+    const card = weatherExpandBtn.closest('.weather-detail');
+    if (card) {
+      // Тоггл "развернуть/свернуть" внутри мини-блока. Полный текст показываем поверх карточки,
+      // чтобы не менять высоту блока "Главная" и не трогать фон.
+      card.classList.toggle('is-expanded');
+      const expanded = card.classList.contains('is-expanded');
+
+      const valueEl = card.querySelector('p');
+      if (valueEl) {
+        let popover = card.querySelector('.weather-popover');
+        if (!popover) {
+          popover = document.createElement('div');
+          popover.className = 'weather-popover';
+          card.appendChild(popover);
+        }
+        popover.textContent = valueEl.textContent || '';
+      }
+
+      const label = expanded ? 'Свернуть' : 'Развернуть';
+      weatherExpandBtn.setAttribute('aria-label', label);
+      weatherExpandBtn.setAttribute('title', label);
+    }
+    event.preventDefault();
+    return;
+  }
 
   const a11yToggleBtn = target.closest('#a11yToggle');
   if (a11yToggleBtn) {
@@ -1090,10 +1393,9 @@ document.addEventListener('click', (event) => {
 
   const uiCollapseBtn = target.closest('[data-a11y-ui-collapse]');
   if (uiCollapseBtn) {
-    a11yState.enabled = true;
     a11yState.uiCollapsed = !a11yState.uiCollapsed;
     // Если сворачиваем верхнее UI — логично убрать и панель настроек.
-    if (a11yState.uiCollapsed) a11yState.collapsed = true;
+    if (a11yState.enabled && a11yState.uiCollapsed) a11yState.collapsed = true;
     saveA11yState();
     applyA11yState();
     event.preventDefault();
@@ -1185,6 +1487,18 @@ document.addEventListener('click', (event) => {
   const bookingBtn = target.closest('[data-booking-type]');
   if (bookingBtn) {
     state.activeBookingType = bookingBtn.getAttribute('data-booking-type');
+    // При смене формата сбрасываем выбор конкретного варианта.
+    state.selectedService = '';
+    if (state.activeBookingType === 'self') {
+      state.activeSelfCategory = 'hotels';
+    }
+    renderBooking();
+  }
+
+  const selfCategoryBtn = target.closest('[data-self-category]');
+  if (selfCategoryBtn) {
+    state.activeSelfCategory = selfCategoryBtn.getAttribute('data-self-category') || 'hotels';
+    state.selectedService = '';
     renderBooking();
   }
 
@@ -1209,7 +1523,10 @@ menuToggle.addEventListener('click', () => {
 });
 
 window.addEventListener('scroll', syncHeaderStyle, { passive: true });
-window.addEventListener('resize', syncHeaderStyle);
+window.addEventListener('resize', () => {
+  syncHeaderStyle();
+  updateWeatherExpandToggles();
+});
 
 bookingForm.addEventListener('submit', (event) => {
   event.preventDefault();

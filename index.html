@@ -9,7 +9,7 @@
   <link rel="preload" as="image" href="img/hero-reindeer.webp" type="image/webp" fetchpriority="high" />
 
   <script src="https://api-maps.yandex.ru/2.1/?apikey=8cbbc9d2-0491-46ba-8be0-84f7bc4c73f8&lang=ru_RU"></script>
-  <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=20260610-1" />
 </head>
 <body>
   <header class="header" id="siteHeader">
@@ -28,7 +28,7 @@
         <button type="button" data-scroll="map">Карта</button>
         <button type="button" data-scroll="objects">Объекты</button>
         <button type="button" data-scroll="practical">Информация</button>
-        <button type="button" class="cta-btn" data-scroll="booking">Бронирование</button>
+        <button type="button" class="cta-btn" data-scroll="booking">Планируйте поездку</button>
         <button type="button" class="a11y-btn" id="a11yToggle" aria-label="Режим для слабовидящих" title="Режим для слабовидящих">
           <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path
@@ -69,7 +69,7 @@
         <button type="button" data-scroll="map">Карта</button>
         <button type="button" data-scroll="objects">Объекты</button>
         <button type="button" data-scroll="practical">Информация</button>
-        <button type="button" data-scroll="booking">Бронирование</button>
+        <button type="button" data-scroll="booking">Планируйте поездку</button>
       </div>
     </div>
 
@@ -106,12 +106,32 @@
           <div class="a11y-controls">
             <button type="button" class="a11y-chip danger" data-a11y-reset="1">Обычная версия</button>
             <button type="button" class="a11y-chip" data-a11y-collapse="1">Свернуть</button>
-            <button type="button" class="a11y-chip" data-a11y-ui-collapse="1">Свернуть верхнее UI</button>
           </div>
         </div>
       </div>
     </div>
   </header>
+
+  <!-- Плавающая кнопка, чтобы вернуть верхнее UI после полного скрытия шапки -->
+  <button
+    type="button"
+    class="a11y-btn ui-float-toggle"
+    id="uiCollapseFloating"
+    data-a11y-ui-collapse="1"
+    aria-label="Развернуть верхнее UI"
+    title="Развернуть верхнее UI"
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path
+        d="M6 9l6 6 6-6"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </button>
 
   <main>
     <section class="hero summer" id="hero">
@@ -128,17 +148,20 @@
             <div class="badge" id="heroBadge">Летний сезон по Воркуте</div>
           </div>
 
-          <h1 class="hero-title">
-            Откройте для себя <span class="summer" id="heroAccent">Воркуту</span>
-          </h1>
+          <div class="hero-copy">
+            <h1 class="hero-title">
+              Откройте для себя <span class="summer" id="heroAccent">Воркуту</span>
+            </h1>
 
-          <p class="hero-text" id="heroText">
-            Летние маршруты делают акцент на открытых площадках, культурных объектах и протяжённых прогулках по городу.
-          </p>
+            <p class="hero-text" id="heroText">
+              Летние маршруты делают акцент на открытых площадках, культурных объектах и протяжённых прогулках по городу.
+            </p>
+          </div>
 
           <div class="hero-actions">
-            <button class="primary-btn" type="button" data-scroll="routes">Смотреть маршруты</button>
-            <button class="secondary-btn" type="button" data-scroll="map">Открыть карту</button>
+            <button class="primary-btn" type="button" data-scroll="booking" data-booking-type="self">Самостоятельное путешествие</button>
+            <button class="secondary-btn" type="button" data-scroll="booking" data-booking-type="guide">С экскурсоводом</button>
+            <button class="outline-btn" type="button" data-scroll="booking" data-booking-type="audio">Аудиогид</button>
           </div>
 
           <div class="weather-card">
@@ -147,20 +170,76 @@
             <p id="weatherText">Летний режим: умеренно прохладно, комфортно для прогулок.</p>
 
             <div class="weather-grid">
-              <div class="info-card">
-                <strong>Ветер</strong>
+              <div class="info-card weather-detail">
+                <div class="info-card-head">
+                  <strong>Ветер</strong>
+                  <button type="button" class="weather-expand-btn" data-weather-expand="1" aria-label="Развернуть" title="Развернуть">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path
+                        d="M6 9l6 6 6-6"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
                 <p id="weatherWind">5 м/с</p>
               </div>
-              <div class="info-card">
-                <strong>Осадки</strong>
+              <div class="info-card weather-detail">
+                <div class="info-card-head">
+                  <strong>Осадки</strong>
+                  <button type="button" class="weather-expand-btn" data-weather-expand="1" aria-label="Развернуть" title="Развернуть">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path
+                        d="M6 9l6 6 6-6"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
                 <p id="weatherPrecip">10%</p>
               </div>
-              <div class="info-card">
-                <strong>Световой день</strong>
+              <div class="info-card weather-detail">
+                <div class="info-card-head">
+                  <strong>Световой день</strong>
+                  <button type="button" class="weather-expand-btn" data-weather-expand="1" aria-label="Развернуть" title="Развернуть">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path
+                        d="M6 9l6 6 6-6"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
                 <p id="weatherLight">Длинный</p>
               </div>
-              <div class="info-card">
-                <strong>Рекомендация</strong>
+              <div class="info-card weather-detail">
+                <div class="info-card-head">
+                  <strong>Рекомендация</strong>
+                  <button type="button" class="weather-expand-btn" data-weather-expand="1" aria-label="Развернуть" title="Развернуть">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path
+                        d="M6 9l6 6 6-6"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
                 <p id="weatherAdvice">Лёгкая ветровка</p>
               </div>
             </div>
@@ -208,11 +287,6 @@
             </div>
 
             <div class="sidebar-card">
-              <h3 class="map-sidebar-title">Легенда</h3>
-              <div class="legend-list" id="legendList"></div>
-            </div>
-
-            <div class="sidebar-card">
               <h3 class="map-sidebar-title">Текущий режим</h3>
               <p id="seasonBoxText" class="muted no-margin"></p>
               <div id="warmingBox" class="warming-box">Точки обогрева отмечены в зимних маршрутах.</div>
@@ -229,7 +303,7 @@
       </div>
     </section>
 
-    <section id="objects" class="section-white">
+    <section id="objects" class="section-soft">
       <div class="container">
         <span class="badge">Объекты</span>
         <h2 class="section-title top-space">Каталог 11 достопримечательностей</h2>
@@ -240,7 +314,7 @@
       </div>
     </section>
 
-    <section id="practical">
+    <section id="practical" class="section-practice">
       <div class="container">
         <span class="badge">Практическая информация</span>
         <h2 class="section-title top-space">Экипировка, безопасность и экстренные контакты</h2>
@@ -264,24 +338,32 @@
       </div>
     </section>
 
-    <section id="booking">
+    <section id="booking" class="section-booking">
       <div class="container section-center">
-        <span class="badge">Планируйте поездку</span>
-        <h2 class="section-title top-space">Бронирование услуг</h2>
+        <span class="badge">Сообщество гидов</span>
+        <h2 class="section-title top-space">Планируйте поездку</h2>
         <p class="section-text section-text-center">
-          Подберите отель, трансфер или ресторан рядом с интересующим маршрутом.
+          Этот проект делает сообщество гидов-экскурсоводов. Вы можете пройти маршрут самостоятельно, с экскурсоводом или использовать аудиогид — оставьте заявку ниже.
         </p>
 
         <div class="booking-tabs" id="bookingTabs"></div>
 
         <div class="booking-layout">
-          <div>
-            <h3 class="booking-list-title" id="bookingListTitle"></h3>
+          <div class="booking-left">
+            <div class="booking-mode-hero" id="bookingModeHero" aria-live="polite">
+              <div class="booking-mode-hero-top">
+                <h3 class="booking-list-title" id="bookingListTitle"></h3>
+                <div class="booking-mode-price" id="bookingModePrice"></div>
+              </div>
+              <p class="booking-mode-text" id="bookingModeText"></p>
+              <div class="booking-mode-highlights" id="bookingModeHighlights"></div>
+            </div>
+
             <div class="booking-options" id="bookingOptions"></div>
           </div>
 
           <div class="booking-form">
-            <h3>Оставить заявку</h3>
+            <h3 id="bookingFormTitle">Оставить заявку</h3>
 
             <div class="success-box" id="successBox">
               <div class="success-icon">✓</div>
@@ -313,12 +395,12 @@
                   <input id="email" type="email" placeholder="email@example.com" />
                 </div>
 
-                <div class="field">
+                <div class="field" data-booking-field="date">
                   <label for="date">Дата</label>
                   <input id="date" type="date" required />
                 </div>
 
-                <div class="field">
+                <div class="field" data-booking-field="guests">
                   <label for="guests">Гостей</label>
                   <select id="guests"></select>
                 </div>
@@ -329,7 +411,7 @@
                 <textarea id="message" placeholder="Дополнительные пожелания..."></textarea>
               </div>
 
-              <button class="primary-btn full-width top-medium" type="submit">Отправить заявку</button>
+              <button class="primary-btn full-width top-medium" id="bookingSubmitBtn" type="submit">Отправить заявку</button>
             </form>
           </div>
         </div>
@@ -395,6 +477,6 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=20260610-1"></script>
 </body>
 </html>

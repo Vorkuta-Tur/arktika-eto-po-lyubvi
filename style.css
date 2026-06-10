@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 :root {
-  --bg: #f7fbff;
+  --bg: #eef6ff;
   --surface: #ffffff;
   --surface-soft: #f2f8fc;
   --border: #d9e7f2;
@@ -22,12 +22,21 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+html, body { overflow-x: hidden; }
 
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
+  --a11y-scale: 1;
+  font-size: calc(16px * var(--a11y-scale));
   color: var(--text);
-  background: var(--bg);
+  background:
+    /* Лёгкий "шум"/текстура, чтобы не было ощущения сплошной заливки */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='%230f172a' opacity='0.03'%3E%3Ccircle cx='10' cy='18' r='1'/%3E%3Ccircle cx='40' cy='8' r='1'/%3E%3Ccircle cx='70' cy='24' r='1'/%3E%3Ccircle cx='96' cy='14' r='1'/%3E%3Ccircle cx='18' cy='58' r='1'/%3E%3Ccircle cx='58' cy='64' r='1'/%3E%3Ccircle cx='92' cy='70' r='1'/%3E%3Ccircle cx='30' cy='102' r='1'/%3E%3Ccircle cx='78' cy='98' r='1'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    radial-gradient(1200px 700px at 15% 0%, rgba(14, 165, 233, 0.14), transparent 60%),
+    radial-gradient(900px 600px at 95% 10%, rgba(245, 158, 11, 0.12), transparent 58%),
+    radial-gradient(900px 600px at 60% 100%, rgba(16, 185, 129, 0.10), transparent 55%),
+    var(--bg);
   line-height: 1.55;
 }
 
@@ -215,7 +224,7 @@ body.ui-collapsed .ui-collapse-btn svg { transform: rotate(180deg); }
 }
 
 .a11y-label {
-  font-size: 12px;
+  font-size: calc(12px * var(--a11y-scale));
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -253,18 +262,22 @@ body.ui-collapsed .ui-collapse-btn svg { transform: rotate(180deg); }
 body.a11y-enabled:not(.a11y-collapsed) .a11y-panel { display: block; }
 
 /* Сворачивание верхнего UI: оставляем только логотип и кнопку-глаз. */
-body.ui-collapsed .nav button:not(#a11yToggle):not(#uiCollapseToggle) { display: none; }
-body.ui-collapsed .brand-text { display: none; }
-body.ui-collapsed .header-inner { min-height: 56px; gap: 14px; }
-body.ui-collapsed .menu-btn { display: none; }
+body.ui-collapsed .header { display: none; }
+body.ui-collapsed .hero { padding-top: 40px; }
+
+.ui-float-toggle {
+  display: none;
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 1101;
+}
+
+body.ui-collapsed .ui-float-toggle { display: inline-flex; }
+body.ui-collapsed .ui-float-toggle svg { transform: rotate(180deg); }
 
 /* Размер шрифта (упрощённо). */
-body.a11y-font-md { font-size: 16px; }
-body.a11y-font-lg { font-size: 18px; }
-body.a11y-font-xl { font-size: 22px; }
-
 /* Масштабирование текста для режима слабовидящих: используем множитель и убираем inline-font-size из шаблонов. */
-body { --a11y-scale: 1; }
 body.a11y-font-md { --a11y-scale: 1; }
 body.a11y-font-lg { --a11y-scale: 1.15; }
 body.a11y-font-xl { --a11y-scale: 1.30; }
@@ -299,10 +312,53 @@ body.theme-dark {
   --muted: rgba(226, 232, 240, 0.72);
 }
 
+body.theme-dark {
+  background:
+    radial-gradient(1200px 700px at 20% 0%, rgba(14, 165, 233, 0.18), transparent 58%),
+    radial-gradient(1000px 700px at 90% 20%, rgba(99, 102, 241, 0.16), transparent 60%),
+    radial-gradient(900px 650px at 50% 100%, rgba(16, 185, 129, 0.12), transparent 55%),
+    var(--bg);
+}
+
 body.theme-dark .badge {
   background: rgba(15, 23, 42, 0.55);
   border-color: rgba(255, 255, 255, 0.18);
   color: rgba(255, 255, 255, 0.88);
+}
+
+/* ===== Тёмная тема: секционные фоны ===== */
+body.theme-dark .section-white::before {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Cg fill='none' stroke='%2338bdf8' stroke-width='0.6' opacity='0.06'%3E%3Cellipse cx='200' cy='200' rx='40' ry='30'/%3E%3Cellipse cx='200' cy='200' rx='70' ry='55'/%3E%3Cellipse cx='200' cy='200' rx='100' ry='80'/%3E%3Cellipse cx='200' cy='200' rx='130' ry='110'/%3E%3Cellipse cx='200' cy='200' rx='165' ry='140'/%3E%3Cellipse cx='200' cy='200' rx='200' ry='175'/%3E%3Cellipse cx='120' cy='130' rx='30' ry='20'/%3E%3Cellipse cx='120' cy='130' rx='55' ry='40'/%3E%3Cellipse cx='300' cy='300' rx='25' ry='35'/%3E%3Cellipse cx='300' cy='300' rx='50' ry='65'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    radial-gradient(ellipse 900px 500px at 12% 10%, rgba(56, 189, 248, 0.08), transparent 60%),
+    radial-gradient(ellipse 700px 600px at 88% 85%, rgba(99, 102, 241, 0.06), transparent 55%);
+  background-color: rgba(15, 23, 42, 0.4);
+}
+
+body.theme-dark .section-soft::before {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%2310b981' stroke-width='0.7' opacity='0.05'%3E%3Cpath d='M60 10L80 30L60 50L40 30Z'/%3E%3Cpath d='M60 70L80 90L60 110L40 90Z'/%3E%3Cpath d='M0 40L20 60L0 80'/%3E%3Cpath d='M120 40L100 60L120 80'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    radial-gradient(ellipse 900px 500px at 8% 15%, rgba(16, 185, 129, 0.06), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 92% 80%, rgba(56, 189, 248, 0.05), transparent 55%);
+  background-color: rgba(15, 23, 42, 0.35);
+}
+
+body.theme-dark .section-practice::before {
+  background:
+    radial-gradient(ellipse 600px 200px at 20% 5%, rgba(16, 185, 129, 0.08), transparent 70%),
+    radial-gradient(ellipse 500px 180px at 55% 8%, rgba(99, 102, 241, 0.06), transparent 65%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'%3E%3Cpath fill='%2338bdf8' fill-opacity='0.03' d='M0,320 L0,240 Q60,200 120,220 Q200,180 280,200 Q360,140 440,170 Q520,120 600,150 Q680,100 760,130 Q840,80 920,110 Q1000,70 1080,100 Q1160,60 1240,90 Q1320,50 1440,80 L1440,320Z'/%3E%3C/svg%3E") no-repeat bottom / 100% 320px,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%2338bdf8'%3E%3Ccircle cx='15' cy='25' r='0.8' opacity='0.1'/%3E%3Ccircle cx='75' cy='15' r='0.6' opacity='0.08'/%3E%3Ccircle cx='45' cy='55' r='0.7' opacity='0.06'/%3E%3C/g%3E%3C/svg%3E") repeat;
+  background-color: rgba(15, 23, 42, 0.35);
+}
+
+body.theme-dark .section-booking::before {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 600' preserveAspectRatio='none'%3E%3Cpath d='M-20,500 Q200,450 350,350 Q500,250 650,280 Q800,310 950,200 Q1100,90 1250,120 Q1400,150 1460,80' fill='none' stroke='%2338bdf8' stroke-width='2' stroke-dasharray='8 6' opacity='0.06'/%3E%3C/svg%3E") no-repeat center / 100% 100%,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Cg opacity='0.04'%3E%3Ccircle cx='50' cy='50' r='4' fill='none' stroke='%2338bdf8' stroke-width='1'/%3E%3Ccircle cx='50' cy='50' r='1.5' fill='%2338bdf8'/%3E%3Ccircle cx='250' cy='100' r='4' fill='none' stroke='%2310b981' stroke-width='1'/%3E%3Ccircle cx='250' cy='100' r='1.5' fill='%2310b981'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    radial-gradient(ellipse 800px 500px at 10% 30%, rgba(56, 189, 248, 0.06), transparent 60%),
+    radial-gradient(ellipse 700px 400px at 85% 70%, rgba(99, 102, 241, 0.04), transparent 55%);
+  background-color: rgba(15, 23, 42, 0.35);
 }
 
 body.theme-dark .season-toggle,
@@ -311,7 +367,7 @@ body.theme-dark .a11y-panel-inner {
   background: rgba(15, 23, 42, 0.78);
 }
 
-/* В тёмной теме делаем затемнение hero более логичным: переход к чёрному, а не к белому. */
+/* В тёмной теме делаем затемнение hero более логичным: переход к чёрному. */
 body.theme-dark .hero::before,
 body.theme-dark .hero.summer::before,
 body.theme-dark .hero.winter::before {
@@ -369,7 +425,7 @@ body.theme-dark .route-cover::after { background: linear-gradient(to top, rgba(0
   border-radius: 12px;
   border: 1px solid var(--border);
   background: var(--surface);
-  font-size: 22px;
+  font-size: calc(22px * var(--a11y-scale));
 }
 
 .mobile-nav {
@@ -394,12 +450,98 @@ section { padding: 96px 0; }
   margin: 18px 0 0;
   max-width: 820px;
   color: var(--muted);
-  font-size: 17px;
+  font-size: calc(17px * var(--a11y-scale));
 }
 
 .section-center { text-align: center; }
 .section-text-center { margin-left: auto; margin-right: auto; }
-.section-white { background: var(--surface); }
+
+/* Секции: уходим от "плоской заливки" — делаем дизайнерский фон через градиенты/световые пятна. */
+.section-white,
+.section-soft,
+.section-practice,
+.section-booking {
+  position: relative;
+  background: transparent;
+}
+
+/* Секция «Маршруты» — Топографические контуры */
+.section-white::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Cg fill='none' stroke='%230ea5e9' stroke-width='0.9' opacity='0.18'%3E%3Cellipse cx='200' cy='200' rx='40' ry='30'/%3E%3Cellipse cx='200' cy='200' rx='70' ry='55'/%3E%3Cellipse cx='200' cy='200' rx='100' ry='80'/%3E%3Cellipse cx='200' cy='200' rx='130' ry='110'/%3E%3Cellipse cx='200' cy='200' rx='165' ry='140'/%3E%3Cellipse cx='200' cy='200' rx='200' ry='175'/%3E%3Cellipse cx='120' cy='130' rx='30' ry='20'/%3E%3Cellipse cx='120' cy='130' rx='55' ry='40'/%3E%3Cellipse cx='120' cy='130' rx='80' ry='60'/%3E%3Cellipse cx='300' cy='300' rx='25' ry='35'/%3E%3Cellipse cx='300' cy='300' rx='50' ry='65'/%3E%3Cellipse cx='300' cy='300' rx='75' ry='95'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    radial-gradient(ellipse 900px 500px at 12% 10%, rgba(14, 165, 233, 0.14), transparent 60%),
+    radial-gradient(ellipse 700px 600px at 88% 85%, rgba(245, 158, 11, 0.10), transparent 55%),
+    radial-gradient(ellipse 500px 400px at 50% 50%, rgba(16, 185, 129, 0.10), transparent 60%);
+  background-color: rgba(214, 238, 255, 0.96);
+  background-blend-mode: multiply, normal, normal, normal;
+}
+
+/* Секция «Объекты» — Северный геометрический орнамент */
+.section-soft::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%2310b981' stroke-width='0.9' opacity='0.14'%3E%3Cpath d='M60 10L80 30L60 50L40 30Z'/%3E%3Cpath d='M60 70L80 90L60 110L40 90Z'/%3E%3Cpath d='M0 40L20 60L0 80'/%3E%3Cpath d='M120 40L100 60L120 80'/%3E%3Cpath d='M10 0L30 20M90 0L110 20M10 120L30 100M90 120L110 100'/%3E%3Cpath d='M50 30h20M50 90h20' stroke-dasharray='2 3'/%3E%3Ccircle cx='60' cy='60' r='3' fill='%2310b981' opacity='0.12'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='%230ea5e9' opacity='0.10'%3E%3Ccircle cx='30' cy='30' r='1.5'/%3E%3Ccircle cx='0' cy='0' r='1'/%3E%3Ccircle cx='60' cy='60' r='1'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    radial-gradient(ellipse 900px 500px at 8% 15%, rgba(16, 185, 129, 0.14), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 92% 80%, rgba(59, 130, 246, 0.12), transparent 55%),
+    linear-gradient(180deg, rgba(214, 238, 255, 0.70) 0%, rgba(214, 238, 255, 0.42) 100%);
+  background-blend-mode: multiply, multiply, normal, normal, normal;
+}
+
+.section-white .container,
+.section-soft .container,
+.section-practice .container,
+.section-booking .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* === Секция "Практическая информация" — Горный хребет + Северное сияние === */
+.section-practice {
+  overflow: hidden;
+}
+
+.section-practice::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 600px 200px at 20% 5%, rgba(16, 185, 129, 0.12), transparent 70%),
+    radial-gradient(ellipse 500px 180px at 55% 8%, rgba(99, 102, 241, 0.08), transparent 65%),
+    radial-gradient(ellipse 400px 150px at 80% 12%, rgba(14, 165, 233, 0.10), transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='none'%3E%3Cpath fill='%230f172a' fill-opacity='0.03' d='M0,320 L0,240 Q60,200 120,220 Q200,180 280,200 Q360,140 440,170 Q520,120 600,150 Q680,100 760,130 Q840,80 920,110 Q1000,70 1080,100 Q1160,60 1240,90 Q1320,50 1440,80 L1440,320Z'/%3E%3Cpath fill='%230f172a' fill-opacity='0.02' d='M0,320 L0,260 Q80,230 160,250 Q240,210 320,235 Q400,190 480,215 Q560,170 640,195 Q720,150 800,180 Q880,140 960,165 Q1040,120 1120,150 Q1200,110 1280,140 Q1360,100 1440,120 L1440,320Z'/%3E%3C/svg%3E") no-repeat bottom / 100% 320px,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%2364748b'%3E%3Ccircle cx='15' cy='25' r='0.8' opacity='0.12'/%3E%3Ccircle cx='75' cy='15' r='0.6' opacity='0.10'/%3E%3Ccircle cx='45' cy='55' r='0.7' opacity='0.08'/%3E%3Ccircle cx='85' cy='70' r='0.5' opacity='0.10'/%3E%3Ccircle cx='30' cy='80' r='0.6' opacity='0.07'/%3E%3C/g%3E%3C/svg%3E") repeat;
+  background-color: rgba(214, 238, 255, 0.92);
+  background-blend-mode: normal, normal, normal, multiply, multiply;
+}
+
+/* === Секция "Планируйте поездку" — Тропа + Компасные метки === */
+.section-booking {
+  overflow: hidden;
+}
+
+.section-booking::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 600' preserveAspectRatio='none'%3E%3Cpath d='M-20,500 Q200,450 350,350 Q500,250 650,280 Q800,310 950,200 Q1100,90 1250,120 Q1400,150 1460,80' fill='none' stroke='%230ea5e9' stroke-width='2.2' stroke-dasharray='8 6' opacity='0.16'/%3E%3Cpath d='M-20,550 Q200,500 350,400 Q500,300 650,330 Q800,360 950,250 Q1100,140 1250,170 Q1400,200 1460,130' fill='none' stroke='%2310b981' stroke-width='1.8' stroke-dasharray='4 8' opacity='0.12'/%3E%3C/svg%3E") no-repeat center / 100% 100%,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Cg opacity='0.12'%3E%3Ccircle cx='50' cy='50' r='4' fill='none' stroke='%230ea5e9' stroke-width='1'/%3E%3Ccircle cx='50' cy='50' r='1.5' fill='%230ea5e9'/%3E%3Ccircle cx='250' cy='100' r='4' fill='none' stroke='%2310b981' stroke-width='1'/%3E%3Ccircle cx='250' cy='100' r='1.5' fill='%2310b981'/%3E%3Ccircle cx='150' cy='200' r='4' fill='none' stroke='%23f59e0b' stroke-width='1'/%3E%3Ccircle cx='150' cy='200' r='1.5' fill='%23f59e0b'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='%230ea5e9' stroke-width='0.4' opacity='0.06' transform='translate(80,80)'%3E%3Ccircle r='60'/%3E%3Ccircle r='40'/%3E%3Cpath d='M0-65L4-50H-4Z' fill='%230ea5e9' opacity='0.12'/%3E%3Cpath d='M0 65L4 50H-4Z'/%3E%3Cpath d='M-65 0L-50 4V-4Z'/%3E%3Cpath d='M65 0L50 4V-4Z'/%3E%3Cpath d='M0-60V60M-60 0H60'/%3E%3C/g%3E%3C/svg%3E") no-repeat 90% 20% / 160px 160px,
+    radial-gradient(ellipse 800px 500px at 10% 30%, rgba(14, 165, 233, 0.12), transparent 60%),
+    radial-gradient(ellipse 700px 400px at 85% 70%, rgba(245, 158, 11, 0.10), transparent 55%),
+    linear-gradient(180deg, rgba(214, 238, 255, 0.70) 0%, rgba(214, 238, 255, 0.42) 100%);
+  background-blend-mode: normal, multiply, normal, normal, normal, normal;
+}
 .top-space { margin-top: 16px; }
 .top-small { margin-top: 10px; }
 .top-medium { margin-top: 16px; }
@@ -415,7 +557,7 @@ section { padding: 96px 0; }
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--primary-dark);
-  font-size: 14px;
+  font-size: calc(14px * var(--a11y-scale));
   font-weight: 700;
   box-shadow: 0 8px 20px rgba(2, 132, 199, 0.06);
 }
@@ -423,14 +565,14 @@ section { padding: 96px 0; }
 .badge--weather {
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-size: 12px;
+  font-size: calc(12px * var(--a11y-scale));
 }
 
 .badge--weather::before {
   /* Use escaped bullet to avoid charset issues in some hosting setups. */
   content: '\2022';
   color: var(--primary);
-  font-size: 18px;
+  font-size: calc(18px * var(--a11y-scale));
   line-height: 0;
   transform: translateY(-1px);
 }
@@ -442,7 +584,10 @@ section { padding: 96px 0; }
   align-items: center;
   position: relative;
   overflow: hidden;
-  background: url('img/hero-reindeer.webp') left center / cover no-repeat;
+  /* Возвращаем нормальный full-bleed фон на всю секцию. Высота теперь фиксирована (100vh),
+     поэтому `cover` не будет "прыгать" из‑за переносов текста. */
+  background: url('img/hero-reindeer.webp') center top / cover no-repeat;
+  color: var(--text);
 }
 
 .hero::before {
@@ -451,6 +596,7 @@ section { padding: 96px 0; }
   inset: 0;
   pointer-events: none;
   transition: none !important;
+  /* Переход изображения в светлую подложку (как ты просил) */
   background: linear-gradient(
     90deg,
     rgba(15, 23, 42, 0) 0%,
@@ -508,11 +654,31 @@ section { padding: 96px 0; }
   transform: translateX(70px);
 }
 
+.hero-copy {
+  width: 100%;
+  padding: 18px 18px;
+  border-radius: 22px;
+  background: rgba(15, 23, 42, 0.48);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+}
+
 .hero-topbar {
   display: flex;
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
+  min-height: 52px;
+}
+
+.hero-topbar .badge {
+  background: rgba(15, 23, 42, 0.32);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 320px;
 }
 
 .season-toggle {
@@ -523,6 +689,7 @@ section { padding: 96px 0; }
 .season-btn {
   flex: 1 0 0;
   text-align: center;
+  min-width: 0;
 }
 
 .routes-grid {
@@ -628,6 +795,8 @@ section { padding: 96px 0; }
   letter-spacing: -0.03em;
   max-width: 640px;
   overflow-wrap: anywhere;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
 }
 
 .hero-title span.summer { color: var(--summer); }
@@ -636,11 +805,11 @@ section { padding: 96px 0; }
 .hero-text {
   margin: 22px 0 0;
   max-width: 620px;
-  /* Make the text under “Discover Vorkuta” black as requested. */
-  color: var(--text);
-  font-size: 18px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: calc(18px * var(--a11y-scale));
   line-height: 1.7;
   overflow-wrap: anywhere;
+  text-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
 }
 
 .hero-actions,
@@ -696,7 +865,7 @@ section { padding: 96px 0; }
 }
 
 .weather-card .temp {
-  font-size: 46px;
+  font-size: calc(46px * var(--a11y-scale));
   font-weight: 800;
   line-height: 1;
   margin: 10px 0 0;
@@ -720,11 +889,73 @@ section { padding: 96px 0; }
   -webkit-box-orient: vertical;
 }
 
-/* На всякий случай фиксируем высоту строк в мини-карточках погоды, чтобы сетка не прыгала. */
-.weather-card .info-card p {
+/* На всякий случай фиксируем высоту строк в мини-карточках погоды, чтобы сетка не прыгала.
+   Но добавляем возможность развернуть текст по кнопке-галочке. */
+.info-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.weather-expand-btn {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--primary-dark);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.weather-expand-btn svg { width: 18px; height: 18px; transition: transform 160ms ease; }
+
+.weather-detail.is-truncated .weather-expand-btn {
+  display: inline-flex;
+}
+
+.weather-detail.is-expanded .weather-expand-btn {
+  display: inline-flex;
+}
+
+.weather-detail.is-expanded .weather-expand-btn svg { transform: rotate(180deg); }
+
+.weather-detail p {
+  /* Возвращаем как было изначально: аккуратное сокращение с троеточием.
+     Полный текст открываем кнопкой в модальном окне (без изменения высоты Hero). */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* В раскрытом состоянии показываем полный текст "поверх" (без изменения высоты карточки). */
+.weather-detail { position: relative; }
+
+.weather-popover {
+  display: none;
+  position: absolute;
+  inset: 48px 14px 14px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 88%, white);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+  padding: 12px 12px;
+  color: var(--text);
+  font-size: calc(14px * var(--a11y-scale));
+  line-height: 1.55;
+  overflow: auto;
+}
+
+.weather-detail.is-expanded .weather-popover { display: block; }
+
+body.theme-dark .weather-popover {
+  background: rgba(15, 23, 42, 0.88);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.92);
 }
 .stats-row {
   display: flex;
@@ -734,7 +965,7 @@ section { padding: 96px 0; }
 }
 
 .stats-number {
-  font-size: 28px;
+  font-size: calc(28px * var(--a11y-scale));
   font-weight: 800;
   line-height: 1;
 }
@@ -779,7 +1010,7 @@ section { padding: 96px 0; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
+  font-size: calc(30px * var(--a11y-scale));
   line-height: 1;
   z-index: 2;
   backdrop-filter: blur(10px);
@@ -808,7 +1039,7 @@ section { padding: 96px 0; }
   flex-wrap: wrap;
   gap: 12px;
   color: white;
-  font-size: 13px;
+  font-size: calc(13px * var(--a11y-scale));
   font-weight: 700;
   z-index: 1;
 }
@@ -837,15 +1068,44 @@ section { padding: 96px 0; }
   border-radius: 999px;
   background: var(--surface);
   border: 1px solid var(--border);
-  font-size: 13px;
+  font-size: calc(13px * var(--a11y-scale));
   font-weight: 700;
   color: var(--muted);
 }
 
 .map-section {
-  background: var(--surface-soft);
+  position: relative;
+  background: transparent;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+}
+
+.map-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%233b82f6' stroke-width='0.4' opacity='0.12'%3E%3Cpath d='M0 0h80v80H0z'/%3E%3Cpath d='M40 0v80M0 40h80'/%3E%3Ccircle cx='40' cy='40' r='2' fill='%233b82f6' opacity='0.3'/%3E%3Ccircle cx='0' cy='0' r='1.5' fill='%233b82f6' opacity='0.2'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%230ea5e9' stroke-width='0.5' opacity='0.06' transform='translate(100,100)'%3E%3Ccircle r='80'/%3E%3Ccircle r='60'/%3E%3Ccircle r='40'/%3E%3Cpath d='M0-90L5-70H-5Z' fill='%230ea5e9' opacity='0.15'/%3E%3Cpath d='M0 90L5 70H-5Z'/%3E%3Cpath d='M-90 0L-70 5V-5Z'/%3E%3Cpath d='M90 0L70 5V-5Z'/%3E%3Cpath d='M0-80V80M-80 0H80'/%3E%3Cpath d='M-57-57L57 57M-57 57L57-57' stroke-dasharray='4 4'/%3E%3C/g%3E%3C/svg%3E") no-repeat 85% 50% / 200px 200px,
+    radial-gradient(ellipse 1000px 600px at 15% 20%, rgba(59, 130, 246, 0.06), transparent 60%),
+    radial-gradient(ellipse 800px 500px at 85% 70%, rgba(14, 165, 233, 0.05), transparent 55%);
+  background-color: rgba(226, 242, 255, 0.86);
+  background-blend-mode: multiply, normal, normal, normal;
+}
+
+.map-section .container {
+  position: relative;
+  z-index: 1;
+}
+
+body.theme-dark .map-section::before {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%2338bdf8' stroke-width='0.4' opacity='0.08'%3E%3Cpath d='M0 0h80v80H0z'/%3E%3Cpath d='M40 0v80M0 40h80'/%3E%3Ccircle cx='40' cy='40' r='2' fill='%2338bdf8' opacity='0.2'/%3E%3C/g%3E%3C/svg%3E") repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%2338bdf8' stroke-width='0.5' opacity='0.04' transform='translate(100,100)'%3E%3Ccircle r='80'/%3E%3Ccircle r='60'/%3E%3Cpath d='M0-90L5-70H-5Z' fill='%2338bdf8' opacity='0.1'/%3E%3Cpath d='M0-80V80M-80 0H80'/%3E%3C/g%3E%3C/svg%3E") no-repeat 85% 50% / 200px 200px,
+    radial-gradient(ellipse 1000px 600px at 15% 20%, rgba(56, 189, 248, 0.08), transparent 60%),
+    radial-gradient(ellipse 800px 500px at 85% 70%, rgba(99, 102, 241, 0.06), transparent 55%);
+  background-color: rgba(15, 23, 42, 0.35);
 }
 
 .map-topbar {
@@ -864,7 +1124,7 @@ section { padding: 96px 0; }
 
 .map-sidebar-title {
   margin: 0 0 10px;
-  font-size: 12px;
+  font-size: calc(12px * var(--a11y-scale));
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: #64748b;
@@ -933,7 +1193,7 @@ section { padding: 96px 0; }
   border-radius: 18px;
   background: #fef2f2;
   color: #b91c1c;
-  font-size: 14px;
+  font-size: calc(14px * var(--a11y-scale));
   font-weight: 700;
 }
 
@@ -941,7 +1201,7 @@ section { padding: 96px 0; }
 
 .summary-card strong {
   display: block;
-  font-size: 24px;
+  font-size: calc(24px * var(--a11y-scale));
   margin-bottom: 8px;
 }
 
@@ -955,14 +1215,14 @@ section { padding: 96px 0; }
 
 .object-meta {
   margin-top: 12px;
-  font-size: 13px;
+  font-size: calc(13px * var(--a11y-scale));
   color: var(--muted);
 }
 
 .booking-list-title {
   text-align: left;
   margin: 0 0 18px;
-  font-size: 26px;
+  font-size: calc(26px * var(--a11y-scale));
 }
 
 .booking-tabs {
@@ -974,24 +1234,257 @@ section { padding: 96px 0; }
 }
 
 .booking-tab {
-  display: inline-flex;
+  --tab-accent: var(--primary);
+  --tab-bg-1: rgba(14, 165, 233, 0.12);
+  --tab-bg-2: rgba(16, 185, 129, 0.10);
+
+  display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  gap: 14px;
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 14px 18px;
-  background: var(--surface);
-  font-weight: 700;
+  border-radius: 20px;
+  padding: 16px 18px;
+  background:
+    radial-gradient(ellipse 200px 120px at 10% 10%, rgba(255, 255, 255, 0.55), transparent 60%),
+    linear-gradient(135deg, var(--tab-bg-1), var(--tab-bg-2));
+  font-weight: 800;
   color: var(--text);
+  min-width: min(320px, 100%);
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.booking-tab:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.10);
+}
+
+.booking-tab[data-booking-type="self"] {
+  --tab-accent: #10b981;
+  --tab-bg-1: rgba(16, 185, 129, 0.18);
+  --tab-bg-2: rgba(14, 165, 233, 0.12);
+}
+
+.booking-tab[data-booking-type="guide"] {
+  --tab-accent: #f97316;
+  --tab-bg-1: rgba(249, 115, 22, 0.18);
+  --tab-bg-2: rgba(245, 158, 11, 0.10);
+}
+
+.booking-tab[data-booking-type="audio"] {
+  --tab-accent: #a855f7;
+  --tab-bg-1: rgba(168, 85, 247, 0.18);
+  --tab-bg-2: rgba(56, 189, 248, 0.10);
+}
+
+.booking-tab-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.64);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  font-size: calc(20px * var(--a11y-scale));
+  flex: 0 0 auto;
+}
+
+.booking-tab-main {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.booking-tab-title {
+  font-size: calc(16px * var(--a11y-scale));
+  line-height: 1.15;
+}
+
+.booking-tab-sub {
+  font-size: calc(13px * var(--a11y-scale));
+  color: var(--muted);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.booking-tab-pill {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  font-size: calc(12px * var(--a11y-scale));
+  font-weight: 800;
+  color: rgba(15, 23, 42, 0.82);
+  white-space: nowrap;
+  flex: 0 0 auto;
 }
 
 .booking-tab.active {
-  background: var(--primary);
+  border-color: rgba(15, 23, 42, 0.10);
+  background:
+    radial-gradient(ellipse 340px 220px at 15% 10%, rgba(255, 255, 255, 0.35), transparent 60%),
+    linear-gradient(135deg, var(--tab-accent), rgba(15, 23, 42, 0.12));
   color: white;
-  box-shadow: 0 16px 30px rgba(14, 165, 233, 0.2);
+  box-shadow: 0 18px 38px rgba(15, 23, 42, 0.18);
+}
+
+.booking-tab.active .booking-tab-sub { color: rgba(255, 255, 255, 0.86); }
+.booking-tab.active .booking-tab-pill {
+  background: rgba(15, 23, 42, 0.22);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+}
+.booking-tab.active .booking-tab-icon {
+  background: rgba(15, 23, 42, 0.22);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.booking-left {
+  display: grid;
+  gap: 16px;
+}
+
+.booking-mode-hero {
+  border-radius: 26px;
+  border: 1px solid var(--border);
+  background:
+    radial-gradient(ellipse 500px 260px at 15% 5%, rgba(255, 255, 255, 0.62), transparent 65%),
+    radial-gradient(ellipse 520px 260px at 85% 80%, rgba(14, 165, 233, 0.12), transparent 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.64) 0%, rgba(255, 255, 255, 0.92) 100%);
+  padding: 22px 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Акцент и подложка картинки зависят от выбранного формата (data-booking-type ставится JS'ом). */
+.section-booking { --booking-hero-img: none; --booking-accent: #0ea5e9; }
+.section-booking[data-booking-type="self"] { --booking-accent: #10b981; --booking-hero-img: url('img/ParkPobedy.webp'); }
+.section-booking[data-booking-type="guide"] { --booking-accent: #f97316; --booking-hero-img: url('img/Dramteatr.webp'); }
+.section-booking[data-booking-type="audio"] { --booking-accent: #a855f7; --booking-hero-img: url('img/MuseynoVistovoh.webp'); }
+
+.booking-mode-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.74) 55%, rgba(255, 255, 255, 0.42) 100%),
+    var(--booking-hero-img);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.25;
+  pointer-events: none;
+  filter: saturate(1.15) contrast(1.05);
+}
+
+.booking-mode-hero > * { position: relative; z-index: 1; }
+
+.booking-mode-hero-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.booking-mode-price {
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  font-weight: 900;
+  color: rgba(15, 23, 42, 0.82);
+  white-space: nowrap;
+}
+
+.booking-mode-text {
+  margin: 12px 0 0;
+  color: rgba(15, 23, 42, 0.78);
+  font-size: calc(15px * var(--a11y-scale));
+  line-height: 1.6;
+}
+
+.booking-mode-highlights {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.booking-highlight {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.76);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  font-size: calc(12px * var(--a11y-scale));
+  font-weight: 800;
+  color: rgba(15, 23, 42, 0.76);
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.06);
 }
 
 .booking-options {
+  display: grid;
+  gap: 16px;
+}
+
+.booking-self-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.booking-self-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.booking-self-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 12px 18px;
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 800;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+
+.booking-self-tab:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+}
+
+.booking-self-tab.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+  box-shadow: 0 16px 30px rgba(14, 165, 233, 0.18);
+}
+
+.booking-self-tab-icon,
+.booking-self-heading-icon {
+  flex: 0 0 auto;
+}
+
+.booking-self-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: calc(18px * var(--a11y-scale));
+  font-weight: 900;
+  color: var(--text);
+}
+
+.booking-self-list {
   display: grid;
   gap: 16px;
 }
@@ -1002,10 +1495,14 @@ section { padding: 96px 0; }
   box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
 }
 
+.booking-option--self {
+  background: rgba(255, 255, 255, 0.82);
+}
+
 .booking-option.active {
-  border-color: #93c5fd;
-  background: #eff6ff;
-  box-shadow: 0 0 0 4px rgba(186, 230, 253, 0.6);
+  border-color: color-mix(in srgb, var(--booking-accent) 55%, white);
+  background: color-mix(in srgb, var(--booking-accent) 12%, white);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--booking-accent) 26%, transparent);
 }
 
 .option-top {
@@ -1017,7 +1514,7 @@ section { padding: 96px 0; }
 
 .rating {
   margin-top: 6px;
-  font-size: 14px;
+  font-size: calc(14px * var(--a11y-scale));
   color: var(--muted);
 }
 
@@ -1038,16 +1535,16 @@ section { padding: 96px 0; }
   align-items: center;
   padding: 7px 12px;
   border-radius: 999px;
-  background: var(--surface-soft);
-  color: var(--muted);
-  font-size: 12px;
+  background: color-mix(in srgb, var(--booking-accent) 10%, var(--surface-soft));
+  color: color-mix(in srgb, var(--booking-accent) 35%, var(--muted));
+  font-size: calc(12px * var(--a11y-scale));
   font-weight: 700;
 }
 
 .selected-line {
   margin-top: 12px;
   color: var(--primary-dark);
-  font-size: 14px;
+  font-size: calc(14px * var(--a11y-scale));
   font-weight: 700;
 }
 
@@ -1067,7 +1564,7 @@ section { padding: 96px 0; }
 .field-full { grid-column: 1 / -1; }
 
 label {
-  font-size: 14px;
+  font-size: calc(14px * var(--a11y-scale));
   font-weight: 700;
   color: var(--text);
 }
@@ -1078,6 +1575,51 @@ body.theme-dark .booking-option.active {
   background: rgba(56, 189, 248, 0.12);
   box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.18);
 }
+
+body.theme-dark .booking-self-tab {
+  background: rgba(15, 23, 42, 0.68);
+  border-color: rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+body.theme-dark .booking-self-tab.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+body.theme-dark .booking-option--self {
+  background: rgba(15, 23, 42, 0.48);
+}
+
+body.theme-dark .booking-mode-hero {
+  border-color: rgba(255, 255, 255, 0.10);
+  background:
+    radial-gradient(ellipse 520px 260px at 10% 10%, rgba(56, 189, 248, 0.14), transparent 60%),
+    radial-gradient(ellipse 520px 260px at 90% 90%, rgba(168, 85, 247, 0.12), transparent 65%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.88) 0%, rgba(15, 23, 42, 0.68) 100%);
+}
+
+body.theme-dark .booking-mode-hero::before {
+  background:
+    linear-gradient(90deg, rgba(15, 23, 42, 0.92) 0%, rgba(15, 23, 42, 0.70) 55%, rgba(15, 23, 42, 0.35) 100%),
+    var(--booking-hero-img);
+  opacity: 0.35;
+}
+
+body.theme-dark .booking-mode-text {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+body.theme-dark .booking-mode-price,
+body.theme-dark .booking-highlight {
+  background: rgba(15, 23, 42, 0.56);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.86);
+}
+
+/* Скрытие полей формы для разных форматов */
+.is-hidden { display: none !important; }
 
 body.theme-dark .service-box {
   background: rgba(56, 189, 248, 0.10);
@@ -1119,7 +1661,7 @@ textarea {
 .service-box.visible { display: flex; }
 
 .service-label {
-  font-size: 14px;
+  font-size: calc(14px * var(--a11y-scale));
   color: var(--muted);
 }
 
@@ -1141,13 +1683,13 @@ textarea {
   justify-content: center;
   background: #dcfce7;
   color: var(--success);
-  font-size: 28px;
+  font-size: calc(28px * var(--a11y-scale));
   font-weight: 700;
 }
 
 .success-title {
   margin: 0;
-  font-size: 24px;
+  font-size: calc(24px * var(--a11y-scale));
 }
 
 .footer {
@@ -1165,7 +1707,7 @@ textarea {
 
 .footer-title {
   margin: 0 0 16px;
-  font-size: 20px;
+  font-size: calc(20px * var(--a11y-scale));
 }
 
 .footer-brand { color: white; margin-bottom: 14px; }
@@ -1218,7 +1760,7 @@ textarea {
   justify-content: space-between;
   gap: 16px;
   color: #94a3b8;
-  font-size: 14px;
+  font-size: calc(14px * var(--a11y-scale));
 }
 
 .footer-bottom-links {
@@ -1252,7 +1794,7 @@ textarea {
   }
 
   .season-toggle {
-    width: 210px;
+    width: min(100%, 360px);
   }
 }
 
@@ -1272,6 +1814,18 @@ textarea {
     justify-content: center;
   }
 
+  /* На узких экранах освобождаем место в шапке. */
+  .brand-subtitle { display: none; }
+  .header-inner { gap: 14px; }
+
+  /* В мобилке сохраняем стабильную геометрию карточки погоды (не должна "прыгать" на «Сейчас»). */
+  .weather-card { min-height: 340px; }
+  .weather-card > p { max-height: 52px; -webkit-line-clamp: 2; }
+
+  .hero-topbar .badge { max-width: 100%; }
+  .season-toggle { width: min(100%, 360px); }
+  .season-btn { padding: 10px 12px; }
+
   .hero { padding-top: 108px; }
 
   .hero-info-grid,
@@ -1284,6 +1838,51 @@ textarea {
   .hero-title,
   .hero-text {
     max-width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  /* Ещё более компактная шапка для телефонов. */
+  .header-inner { min-height: 64px; gap: 10px; }
+
+  .brand-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+  }
+
+  .brand-title { font-size: calc(16px * var(--a11y-scale)); }
+  .brand-text { line-height: 1.05; }
+
+  .a11y-btn { width: 40px; height: 40px; }
+  .a11y-btn svg { width: 20px; height: 20px; }
+
+  .menu-btn { width: 40px; height: 40px; }
+
+  /* Если всё равно не помещается — скрываем текст бренда (оставляем только иконку). */
+  .brand-text { display: none; }
+
+  .hero { padding-top: 96px; }
+
+  .ui-float-toggle { top: 10px; right: 10px; }
+
+  /* На телефоне убираем "переход" в белый/чёрный — оставляем ровную подложку поверх фото. */
+  .hero::before,
+  .hero.summer::before,
+  .hero.winter::before {
+    background: rgba(0, 0, 0, 0.45);
+  }
+
+  /* Уменьшаем внутренние отступы карточек, чтобы контент не выглядел "зажатым". */
+  .hero-panel,
+  .info-card,
+  .booking-form,
+  .sidebar-card,
+  .object-card,
+  .practice-card,
+  .weather-card,
+  .summary-card {
+    padding: 18px;
   }
 }
 
