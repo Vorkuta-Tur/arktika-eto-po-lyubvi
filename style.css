@@ -586,7 +586,7 @@ section { padding: 96px 0; }
   overflow: hidden;
   /* Возвращаем нормальный full-bleed фон на всю секцию. Высота теперь фиксирована (100vh),
      поэтому `cover` не будет "прыгать" из‑за переносов текста. */
-  background: url('img/hero-reindeer.webp') center top / cover no-repeat;
+  background: url('img/hero-reindeer.webp') left top / cover no-repeat;
   color: var(--text);
 }
 
