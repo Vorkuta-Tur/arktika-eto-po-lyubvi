@@ -579,15 +579,14 @@ section { padding: 96px 0; }
 
 .hero {
   min-height: 100vh;
-  height: 100vh;
   padding-top: 120px;
   display: flex;
   align-items: center;
   position: relative;
   overflow: hidden;
-  /* Возвращаем нормальный full-bleed фон на всю секцию. Высота теперь фиксирована (100vh),
-     поэтому `cover` не будет "прыгать" из‑за переносов текста. */
-  background: url('img/hero-reindeer.webp') left top / cover no-repeat;
+  /* background-attachment: fixed означает, что размер фона считается от вьюпорта,
+     а не от высоты элемента — изображение не меняет размер при изменении контента. */
+  background: url('img/hero-reindeer.webp') left top / cover no-repeat fixed;
   color: var(--text);
 }
 
